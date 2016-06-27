@@ -1,0 +1,66 @@
+.blog-container {
+	padding-right: 10%;
+	padding-left: 10%;
+	height: 800px;
+	margin: 0 auto;
+	background-color: #DCCFBC;
+	/*沙色*/
+	margin: 0;
+}
+.header {
+	height: 60px;
+	width: 100%;
+	margin: 10px auto;
+	background-color: #50353A;
+	/*苦巧色*/
+	color: white;
+}
+.header-title {
+	margin: 10px;
+	font-size: 40px;
+}
+.user-bar li{
+	display: inline-block;
+	text-decoration: none;
+}
+.user-bar {
+	float: right;
+	height: 60px;
+	line-height: 60px;
+}
+.navi {
+	/*background-color: #6F5E57;*/
+	float: left;
+	margin-top: 20px;
+	width: 25%;
+	height: 300px;
+}
+.navi-bar {
+	padding-left: 0;
+}
+.navi-bar li {
+	margin: 5px;
+	background-color: #6F5E57;
+	width: 80%;
+	height: 50px;
+	line-height: 50px;
+	padding-left: 20px;
+	list-style: none;
+	font-size: 18px;
+	color: white;
+}
+.navi-bar li:hover {
+	background-color: #FACE04;
+}
+.blog-content {
+	float: right;
+	height: 400px;
+	width: 75%;
+	background-color: #F3F1F4;
+	margin-top: 20px;
+	padding: 10px 30px;
+}
+.blog-content img {
+	width: 300px; 
+	height: 300px;
+}
