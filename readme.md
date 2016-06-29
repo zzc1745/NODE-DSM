@@ -116,6 +116,13 @@ module.exports = router; //开放router的对外接口
 1. 在/node_modules中放入mongoose文件夹
 2. 引用mongoose模块，创建模型，生成实例，赋值，操作
 ```javascript
+var mongoose = require('mongoose');
+var db = mongoose.createConnection('localhost','test');
+db.on('error',console.error.bind(console,'连接错误:'));
+db.once('open',function(){
+    //一次打开记录
+    //此处可添加伪造数据，完成数据查询，接下去要把不同功能的代码分装，难点在于路由
+    };
 router.get('/', function(req, res, next) {
   // res.render('index', { title: 'Express' });
 
@@ -179,15 +186,108 @@ router.get('/blog', function(req, res, next) {
 });
 ```
 
+***2016年6月29日***
+### json和ajax的回顾
+json:封装数据
+```javascript
+    var jsonStr = "{\"a\":\"内容1\", \"b\":\"内容2\",\"c\":\"内容3\",\"d\":\"内容4\"}";
+    //jsonStr是json类型的字符串
+    var jsonObj = eval("(" + jsonStr + ")"); 
+    //jsonObj是jquery对象
+```
+ajax:异步调用json数据对象，输出到html
+
+### 数据库交互的理解（登陆部分）
+步骤：  
+1. 定义数据模型，userSchema  
+2. 声明模型可以使用的函数findUsr()与addUser()，并开放接口  
+3. 在index.js中添加用户模块的路由  
 
 
 
+### 问题整理
+1. mongoose模块已经通过命令行install但无法require  
+解决：  
+确认已经在node_modules文件夹中添加模块文件  
+在package.json文件中，还要再添加dev外部依赖项  
 
+2. http之间的状态码  
 
+|Type|  Reason-phrase| Note|
+| ------------- |:-------------:|:-----|
+|1XX |Informational  |信息性状态码，表示接受的请求正在处理|
+|2XX |Success        |成功状态码，表示请求正常处理完毕|
+|3XX |Redirection    |重定向状态码，表示需要客户端需要进行附加操作|
+|4XX |Client Error   |  客户端错误状态码，表示服务器无法处理请求|
+|5XX |Server Error   |  服务器错误状态码，表示服务器处理请求出错|
 
-
-
-
-
-
-
+3. 伪造数据与增删查改  
+###### 通过entity创建记录
+```javascript
+var Schema = mongoose.Schema;
+var personSchema = new Schema({
+        name: String,
+        password: String
+    });
+    var person = mongoose.model('person',personSchema);
+    person1 = new person({
+        name: 'jdppppp',
+        password:'11fff'
+    });
+    person1.save(function (err,doc) {
+        if(err){
+            console.log('error')
+        }else{
+            console.log(doc)
+        }
+    })
+```
+###### 查询该实例前身的所有记录
+```javascript
+    Blog.find(function (err,blogs) {
+        console.log(blogs);
+    })
+    person.find(function(err,persons){
+        console.log(persons)
+    });
+```
+###### 通过model调用create创建记录
+```javascript
+person.create({
+        name: 'xxxjjj',
+        password:'jkfdksajflkdsaf',//没有录入已有属性,则不输出
+        email: '864741099@qq.com' //对于person中不包含的属性,不会录入
+    },function (error, doc){
+        console.log(doc);
+    });
+```
+###### 根据指定条件删除删除记录
+```javascript
+    var conditions_delete = { name: 'dsm'};
+    person.remove(conditions_delete,function(error){
+       if(error){
+           console.log(error);
+       }else {
+           console.log('delete success!');
+       }
+    });
+```
+###### 更新记录(似乎只更新第一条??)
+```javascript
+    var conditions_update = { title: 'aaa' };
+    var update = {$set :{author: '咻咻咻'}};
+    Blog.update(conditions_update,update,function (error,doc) {
+        if(error){
+            console.log(error);
+        }else{
+            console.log(doc);
+        }
+    })
+```
+###### 单条查询
+```javascript
+    Blog.findOne({},function (error,data) {
+        //没有附加条件就输出所有记录的第一条
+        console.log(data);
+    })
+```
