@@ -185,8 +185,12 @@ router.get('/blog', function(req, res, next) {
 <!--此段代码即表示{{{body}}}包含了blog.hbs中的所有模块，在此在注意今后自己规划hbs的分块要明确-->
 });
 ```
+    
 
-***2016年6月29日***
+---  
+
+***2016年6月29日***  
+
 ### json和ajax的回顾
 json:封装数据
 ```javascript
@@ -195,7 +199,8 @@ json:封装数据
     var jsonObj = eval("(" + jsonStr + ")"); 
     //jsonObj是jquery对象
 ```
-ajax:异步调用json数据对象，输出到html
+ajax:异步调用json数据对象，输出到html  
+参考：http://www.php100.com/html/program/jquery/2013/0905/5912.html  
 
 ### 数据库交互的理解（登陆部分）
 步骤：  
@@ -221,8 +226,9 @@ ajax:异步调用json数据对象，输出到html
 |4XX |Client Error   |  客户端错误状态码，表示服务器无法处理请求|
 |5XX |Server Error   |  服务器错误状态码，表示服务器处理请求出错|
 
-3. 伪造数据与增删查改  
-###### 通过entity创建记录
+3.伪造数据与增删查改  
+
+######通过entity创建记录
 ```javascript
 var Schema = mongoose.Schema;
 var personSchema = new Schema({
@@ -290,4 +296,76 @@ person.create({
         //没有附加条件就输出所有记录的第一条
         console.log(data);
     })
+```  
+---
+  
+*2016年6月30日*  
+
+### 登录模块调试总结
+1. ajax通过html中的id属性获取元素内容  
+
+2. 在后台插入数据，可以在`index.js`中新增一个空白页面，专用于插入数据记录，避免重复录入(在没有检查的情况下）  
+
+3. 路由路径缩略符：  
+   / :当前默认的静态映射  
+   ./: 当前文件夹下  
+   ../:回到上一层文件目录  
+
+4. 对应的js可以包含在对应的hbs文件中   
+ **此处存疑** 关于addBlog.js的包含问题 暂解决，未理解  
+
+5. command+单击，进入变量、函数声明  
+ 
+6. 断点调试的方法，仍然不太懂
+
+### *node.js学习指南*PDF第五章（1-6节）学习总结  
+
+#### app.js文件  
+1. ```app.configure(function(){});```
+通过回调函数，设置app对应的Express模块的参数
+2. ```app.set();```   设置参数  
+   ```app.use();```   启用中间件  
+3. 心得体会：这几天学的内容繁多，对于新软件的使用也很不上手，很难理解页面的实现，之前主要靠重复调试得到想要的效果，对于原理仍然一知半解。今天在阅读书本之后，真正理解“app.js是入口文件”，整个项目文件，从app.js开始解析，首先获取模块，然后设置路由，接着在不同页面的跳转中，触发新的js文件，执行对应的函数，在控制台输出数据。项目从零碎的部件，得到线索能够串起来，对于理解上，有一个比较大的进步。
+#### 路由文件
+```js
+exports.index=function(req,res){
+    res.render('index',{title:'Express'});
+    //定义一个函数，调用'index.hbs’模板解析引擎，产生页面返回浏览器
+    //{title:'Express'}是传入的参数
+};
 ```
+####Express处理路由规则
+1. 同一个路径(如'/login')可以绑定多个路由响应函数，但是按照顺序优先匹配第一个。
+2. next()的用处，转移控制权，就是用于服务上述情况，从当前匹配的函数，跳转至下一个匹配路径的规则。
+3. next()，也可以起到类似中间件的效果，提取相似请求的相同部分，结合页面模板和要显示的数据结合生成HTML。  
+eg.验证用户名存在与否；存在则展出，不存在则输出error。验证部分就可以插入next()
+
+### TotalFinder插件
+#### 安装习得  
+马克资源：mac优化工作环境必备一级棒 http://ju.outofmemory.cn/entry/217935 
+​
+#### 破解totalFinder：
+1. 某个教程知道把/Library/ScriptingAdditions/TotalFinder.osax/Contents/Resources路径下的TotaFinder.bundle放入patch.app即可  
+   因下载版本无patch.app文件更换破解方法
+2. 重新下载文件，遇到文件损坏问题，打算等到过期再破....
+
+#### 
+连续两次遇到zip文件解压生成cpgz文件，cpgz解压后又生成zip文件
+> 导致这种情况的原因有一下几点：  
+   1. zip文件已经损坏；  
+　　2. zip文件下载时没有下载完全；  
+　　3. 浏览器在下载或者下载完成zip文件时，对其进行了错误处理；  
+　　4. bug导致。  
+
+首先验证一下你的zip文件md5 hash或者SHA1，如果校验显示不同，说明你的文件有损坏或者下载不完全。
+> Tips：  
+校验MD5 hash方法：打开终端，输入MD5，空格，然后输入需要验证的文件路径（可以直接将文件拖进去）  
+校验sha1：打开终端，输入shasum，空格， 然后输入需要验证的文件路径（可以直接将文件拖进去）
+
+验证结果：两个校验码不同，文件损坏  
+
+#### 电脑重启，忘记启动mongodb导致无法连上数据库  
+在mongodb根目录下配置路径为db   
+mongod --dbpath /data/db  
+
+
