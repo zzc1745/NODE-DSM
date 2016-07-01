@@ -369,3 +369,59 @@ eg.验证用户名存在与否；存在则展出，不存在则输出error。验
 mongod --dbpath /data/db  
 
 
+*2016年7月1日*
+
+### 自动添加依赖项到package.json
+`spm install module-name -save` 自动把模块和版本号添加到dependencies部分  
+`spm install module-name -save-dve` 自动把模块和版本号添加到devdependencies部分  
+产品模式用dependencies，开发模式用devDep。  
+
+### chrome 调试断点技巧：
+- `{ }`可以把压缩代码优化成可读性强的代码  
+- `resume script execution` 恢复执行脚本  
+- 打开js代码，设置/取消断点，右侧“breakpoints列表可以查看断点  
+- 箭头加斜杠标识，表示临时禁用所有断点 
+- call stack（调用栈），可以查看当前断点所处的方法调用栈，可以嵌套调用，也就是说可以含有断点的最外层函数也会被包含进来调用栈中的每一层叫做一个frame，点击每个frame可以跳到该frame的调用点上。  
+- scope中查看变量具体的参数
+
+###  node常用模块简介
+参考资料：http://www.open-open.com/lib/view/open1409796214932.html  
+
+###  增加新闻模块的debug心得
+1. 出现数据库连接错误提示：trying to open unclosed database  
+   原因：同一个数据库，不能打开两次
+   >相关技术：如何同时连接多个数据库  
+   `mongoose.connect()`只能连接一个数据库  
+   `mongoose.createConnection()`可以同时连接多个数据库  
+   参考资料：http://jayceefun.github.io/blog/2013/08/27/mongoose_multi_dbs/  
+
+2. ajax无法从前台获得数据，传入后台  
+   解决：明早具体补充  
+   明早看关于全局变量的内容：http://www.hacksparrow.com/global-variables-in-node-js.html  
+
+
+### 为加强理解，对nodejs项目框架分析
+
+>bin  
+......www : 创建web服务器，配置监听port  
+>db  
+......schema  
+............news.js:新闻模型保存+记录保存预处理+将该模型输出到数据库的一张表中  
+......user.js : 用户模型保存+记录保存预处理+将该模型输出到数据库的一张表中  
+......db.js : 向控制台输出数据库的连接状态status  
+......dbHelper.js : 获取`./schema`中的模型，findUsr函数（findOne匹配，输出结果到entries）和addNews函数（获取传入数据并转化到News模型数据+保存函数**不懂这个model.pre('save')函数的调用机制**）  
+......jsonRes.js
+lib  
+......hbsHelper.js : 获取moment模块，存储日期处理函数，并输出到外部供调用  
+......webHelper.js : 获取remarkable模块，存储函数并输出到外部供调用（目测该模块的用处是高亮网页的error信息）  
+node_modules:存放封装好的模块  
+public  
+......blog  
+............addNews.js : 增加新闻的ajax函数调用  
+............login.js : 登录页面的ajax函数调用  
+  
+
+
+
+
+

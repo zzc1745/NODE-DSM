@@ -18,7 +18,7 @@ app.set('port', port);
 /**
  * Create HTTP server.
  */
-
+// http.createServer创建一台web服务器的关键所在，是处理请求和回应的主函数出口和出口
 var server = http.createServer(app);
 
 /**

@@ -64,3 +64,77 @@
 	width: 300px; 
 	height: 300px;
 }
+
+.add-news {
+	float: right;
+	height: 400px;
+	width: 75%;
+	background-color: #F3F1F4;
+	margin-top: 20px;
+	padding: 10px 30px;
+}
+#news-title {
+	width: 100%;
+	margin-top: 20px;
+}
+#news-content {
+	width: 100%;
+	height: 200px;
+	margin-top: 20px;
+}
+#publicNews {
+	width: 100px;
+	float: right;
+	margin-top: 20px;
+	text-align: top;
+	background-color: #367fa9;
+	color: white;
+}
+.user-info {
+	margin-top: 1px;
+	margin-right: -15px;
+	float: right;
+	width: 250px;
+	display: none;
+}
+.user-image {
+	width: 100%;
+	/*height: 80px;*/
+	padding: 10px 0;
+	text-align: center;
+	background-color: #50353A;
+}
+.user-image img {
+	width: 60px;
+	height: 60px;
+	border-radius: 30px;
+}
+.user-buttons {
+	margin-top: -10px;
+	background-color: #50353A;
+}
+.user-buttons a {
+	/*display: inline-block;*/
+	width: 35%;
+	margin: 10px;
+}
+#profile {
+	float: left;
+}
+.clear-both {
+	clear: both;
+}
+#sign-out {
+	float: right;
+}
+
+
+
+
+
+
+
+
+
+
+
