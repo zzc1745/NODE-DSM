@@ -1,6 +1,7 @@
 $(init);
 
 function init() {
+    console.log('sjdf');
     $("body").on('click','#publicNews', doPublic);
 }
 
@@ -26,9 +27,6 @@ function doPublic() {
                alert("发布成功");
            }
         }
-        error: function(textStatus, errorThrown){
-            console.log("123");
-        };
     })
 }
 

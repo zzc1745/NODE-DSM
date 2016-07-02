@@ -38,7 +38,7 @@ exports.findUsr = function(data, cb) {
 exports.addNews = function(data, cb) {
 
 
-    data.content = md.render(data.content);
+    // data.content = md.render(data.content);
 
     var news = new News({
         title: data.title,
