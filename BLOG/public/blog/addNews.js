@@ -1,7 +1,6 @@
 $(init);
 
 function init() {
-    console.log('sjdf');
     $("body").on('click','#publicNews', doPublic);
 }
 

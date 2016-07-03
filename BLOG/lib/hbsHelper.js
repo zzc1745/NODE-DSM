@@ -90,7 +90,7 @@ module.exports = {     //模块输入函数,在外部调用
     add: function (value1, value2) {
         return Number(value1) + Number(value2);
     },
-    reduce: function (value1, value2) {
-        return Number(value1) - Number(value2);
-    }
+    // reduce: function (value1, value2) {
+    //     return Number(value1) - Number(value2);
+    // }
 };

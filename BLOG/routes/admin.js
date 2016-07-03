@@ -7,9 +7,17 @@ var dbHelper = require('../db/dbHelper');
 router.get('/news',function(req,res,next){
   res.render('./admin/news',{ title:'Express', layout:'admin'});
 });
-
 router.post('/news',function(req,res,next){
   dbHelper.addNews(req.body, function (success, doc){
+    res.send(doc);
+  })
+});
+
+router.get('/reg',function(req,res,next){
+  res.render('./reg',{title: 'Express', layout :'reg'});
+});
+router.post('/reg',function (req,res,next){
+  dbHelper.addUser(req.body, function (success, doc) {
     res.send(doc);
   })
 });

@@ -14,6 +14,7 @@ var userSchema = new Schema({
 });
 
 //在保存记录前,先检查是否是新的记录
+//在保存记录时,自动加入创建时间和更新时间
 userSchema.pre('save',function (next) {
     if(this.isNew) {
         //记录为新,创建时间与更新时间都为当前

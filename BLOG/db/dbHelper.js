@@ -8,6 +8,7 @@ var webHelper = require('../lib/webHelper');
 
 // var md = webHelper.Remarkable();
 
+//用户登录的查找函数
 exports.findUsr = function(data, cb) {
 
     User.findOne({
@@ -33,19 +34,54 @@ exports.findUsr = function(data, cb) {
             cb(true, entries);
         }
     })
-}
+};
+
+
+exports.addUser = function(data, cb){
+    User.findOne({username:data.usr},function (err, doc) {
+        // alert('err');
+        // alert('验证用户名存在否中');
+        var user = (doc !=null)? doc.toObject():'';
+        if(doc === null) {
+            //如果输入的注册用户名不存在,进入密码校验
+            if (data.pwd === data.pwdRepeat) {
+                var newUser = new User({
+                    username: data.usr,
+                    password: data.pwd,
+                    email: data.email,
+                    address: data.address
+                });
+                newUser.save(function (err, doc) {
+                    if (err) {
+                        cb(false, err);
+                    } else {
+                        cb(true, entries);
+                    }
+                });
+                // alert("真的存进去了!");
+            } else {
+                entries.code = 99;
+                entries.msg = '两次输入的密码不符';
+                cb(false, entries);
+            }
+        }
+            //如果该用户名已经存在
+            else {
+                entries.code = 99;
+                entries.msg = '用户名已存在';
+                cb(false, entries);
+            }
+    })
+};
+
 
 exports.addNews = function(data, cb) {
-
-
     // data.content = md.render(data.content);
-
     var news = new News({
         title: data.title,
         content: data.content,
         author:data.id
     });
-
     news.save(function(err,doc){
         if (err) {
             cb(false,err);
@@ -54,3 +90,4 @@ exports.addNews = function(data, cb) {
         }
     })
 };
+

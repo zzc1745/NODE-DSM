@@ -1,0 +1,40 @@
+.container-fluid {
+	background-color: #D3D3D3;
+	height: 700px;
+}
+.sheets {
+	width: 600px;
+	height: 450px;
+	background-color: white;
+	margin: 150px auto;
+	padding-top: 10px;
+	padding-bottom: 30px;
+}
+.reg-row {
+	margin: 0;
+	padding-left: 30px;
+}
+.reg-title {
+	margin-top: -60px;
+	margin-bottom: 30px;
+	font-size: 30px;
+	color: black;
+	text-align: center;
+}
+.sheets input {
+	width: 300px;
+	margin: 10px auto;
+	display: inline-block;
+}
+.login-icon {
+	float: right;
+	position: relative;
+}
+.login-button {
+	float: right;
+	margin-right: 50px;
+	width: 60px;
+	height: 35px;
+	background-color: #367fa9;
+	color: white;
+}

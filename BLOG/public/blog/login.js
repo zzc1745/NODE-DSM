@@ -22,7 +22,7 @@ function doLogin() {
                 //如果是99 说明错误 返回错误原因
                 $(".login-box-msg").text(result.msg);
             } else {
-                //把数据存进cookie
+                //把数据存进cookie,目的是用于之后的用户进入界面调用该登录用户数据
                 $.cookie('username', result.data.username, {expires:30});
                 $.cookie('password', result.data.password, {expires:30});
                 $.cookie('id', result.data._id, {expires:30});
