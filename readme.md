@@ -1,4 +1,41 @@
 # 学习日记
+## 2016年7月5日
+## nodejs读书笔记
+- 登入与登出，本质上是req.session.user变量标记的变动。signout的实现，就是使用res.redirect('/')重定向跳转到其他页面，并且设置user=null;  
+页面设置访问权限：原理是在每个页面的路由响应函数内，检查是否登录；为简化代码，利用路由中间件，在每个路由前加路由中间件, 可实现页面控制。
+```js
+app.get('/reg', checkNotLogin);   
+app.get('/reg', function(req, res) {});  
+app.post('/reg', checkNotLogin);  
+app.post('/reg', function(req, res){});
+app.get('/logout', checkLogin); 
+app.get('/logout', function(req, res) {});
+app.get('/login', checkNotLogin); 
+app.get('/login', function(req, res) {});
+app.post('/login', checkNotLogin);
+app.post('/login', function(req, res) {});
+function checkLogin(req, res, next) { 
+  if (!req.session.user) {
+      req.flash('error', '未登入'); 
+      return res.redirect('/login'); }
+      next(); }
+function checkNotLogin(req, res, next) {
+      if (req.session.user) {
+        req.flash('error', '已登入');
+        return res.redirect('/');
+      }
+next(); }
+```
+- 为登录用户与未登入用户显示不同信息：  
+```
+if(success)
+<div>正常页面</div>
+if(error)
+<div>错误页面</div>
+```
+- js异步调用原理  
+https://segmentfault.com/a/1190000002545312
+---
 ## 2016年7月4日
 ### 安装网页调试插件 devtool  
 安装：``npm install -g devtool``  
