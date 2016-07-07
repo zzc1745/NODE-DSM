@@ -26,12 +26,16 @@ db.once('open',function(){
 
 
 /* GET home page. */
-router.get('/blog', function(req, res, next) {
-  res.render('blog', { title: 'Express' , layout:'main'} );
-    // person.find(function(err,persons){
-    //     console.log(persons)
-    // });
+router.get('/blog', function (req,res,next) {
+    dbHelper.getNews(req, function (success,docs) {
+        //res.send(docs); 把原始数据传到页面
+        //把docs传回blog.hbs页面
+        //回调函数中的docs要和res.render的传出参数docs一致
+        res.render('blog', { entries: docs , layout: 'main'});
+    });
 });
+
+
 router.get('/login', function(req,res,next) {
     res.render('login',{ title: 'Express', layout:'lg'});
 });
@@ -48,15 +52,11 @@ router.get('/user', function(req,res,next) {
         username: 'anna',
         password: 'a'
     })
-
     user.save(function (err, doc){
-
         if(err) {
             console.log(err);
         }
-
     });
-
 });
 
 module.exports = router;

@@ -5,6 +5,7 @@ function init() {
 }
 
 function doPublic() {
+    //通过ajax调用这些数据 {}中的都是调用的参数
     $.ajax({
         //将表单用post的方法发布
         type: "POST",

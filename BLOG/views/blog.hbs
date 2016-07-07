@@ -30,11 +30,18 @@
             <li>语言</li>
         </ul>
     </div>
-    <div class="blog-content">
-        <h2>NODE.JS学习日记</h2>
-        <img src="/images/rab.jpg">
-        <p>今天天气可真好</p>
-    </div>
+    {{#each entries}}
+        <div class="blog-content">
+            <div class="blog-title">
+                <h5>{{title}}</h5>
+                <span class="blog-date">创建于{{meta.createAt}}</span>
+            </div>
+            <div class="blog-text">
+                <!--//content需要转码,否则出现<p>content</p>,所以需要三个大括号-->
+                <p>{{content}}</p>
+            </div>
+        </div>
+    {{/each}}
 </div>
 
 <script src="/blog/profile.js"></script>

@@ -36,7 +36,7 @@ exports.findUsr = function(data, cb) {
     })
 };
 
-
+//用户注册函数,要求用户名还没有被注册并且两次输入密码相同
 exports.addUser = function(data, cb){
     User.findOne({username:data.usr},function (err, doc) {
         // alert('err');
@@ -74,7 +74,7 @@ exports.addUser = function(data, cb){
     })
 };
 
-
+//添加新闻函数
 exports.addNews = function(data, cb) {
     // data.content = md.render(data.content);
     var news = new News({
@@ -89,5 +89,22 @@ exports.addNews = function(data, cb) {
             cb(true,entries);
         }
     })
+};
+
+
+//展示新闻函数
+exports.getNews = function (req,cb) {
+    //在News的模型里面找到所有数据,并且对找到的所有结果,执行同一个操作函数
+    //find函数返回的是保存了数据的字符串(数组) 因此如果需要调用数据,要先转变成对象
+    News.find().exec(function (err,docs) {
+        //定义一个数组,用来保存数据
+        var newsList = new Array();
+        for(var i=0; i<docs.length; ++i ){
+            //按照次序,把docs转变得到的对象数组,逐个push进入空数组
+            //数组修改器--$push
+            newsList.push(docs[i].toObject());
+        }
+        cb(true,newsList);
+    });
 };
 

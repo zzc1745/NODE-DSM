@@ -1,8 +1,78 @@
 # 学习日记
+## 2016年7月7日
+### mongodb_修改器  
+参考资料：http://www.cnblogs.com/xiangxiaodong/archive/2012/12/15/2820051.html  
+$inc ：对某个数字类型的键，进行增加操作  
+$set ：用来指定一个键并更新键值，若键不存在并创建。内嵌文档的更新，用点连接  
+$unset：用来删除某个键。（使用修改器$unset时，不论对目标键使用1、0、-1或者具体的字符串等都是可以删除该目标键。）  
+$push：可以push一个当前文档中不存在的键，也可以向文档的某个数组类型的键添加一个数组元素，不过滤重复的数据。  
+$ne/$addToSet ：：可以避免重复添加数组元素  
+$pop：从数组的头部或尾部删除数组中的元素  
+$pull：从数组中删除满足条件的元素  
+upsert：如果有符合条件的文档，update；如果没有，insert  
+save函数：可以在文档不存在的时候插入，存在的时候更新，只有一个参数文档。  
+
+### 新闻列表模块编写整理
+1. router.post()传入后台  
+router.get()传出到页面前端  
+```js
+router.get('/blog', function (req,res,next) {
+    dbHelper.getNews(req, function (success,docs) {
+        //回调函数中的docs要和res.render的传出参数docs一致
+        res.render('blog', { entries: docs , layout: 'main'});
+    });
+});
+```
+2. 在blog.hbs中，因为在注释中出现了{{{}}}的符号，导致了字符串解析失败，页面不能显示，删除该注释之后就可以了  
+
+---
+## 2016年7月6日 
+
+### 正则表达式
+
+1. 字符集合 
+
+   常用元字符表：
+
+   \b表示单词的分解处，匹配的是一个位置
+
+   \d{n}表示连续重复匹配n次
+
+   \d+表示匹配重复1次或更多次
+
+   常用的限定符表：
+
+   *：重复0次或更多次
+
+   +：重复1或更多
+
+   ?：重复0或1次
+
+   {n}：重复n次
+
+   {n,}：重复n或更多次
+
+   {n,m}：重复n~m次
+
+2. 匹配方式
+
+   []：匹配字符  eg. [aeiou]、[a-z] 
+
+   |：分枝条件   \d{5}-\d{4}|\d{5}这个表达式用于匹配美国的邮政编码。美国邮编 的规则是5位数字，或者用连字号间隔的9位数字。之所以要给出这个例子是因为它能说明一个问题：**使用分枝条件时，要注意各个条件的顺序**。 如果你把它改成\d{5}|\d{5}-\d{4}的话，那么就只会匹配5位的邮编(以及9位邮 编的前5位)。原因是匹配分枝条件时，将会从左到右地测试每个条件，如果满足了某个分枝的话，就不会去再管其它的条件了。
+
+3.   反义   
+
+   \w 表示匹配任意不是字母数字下划线汉字的字符
+
+   [^x]匹配除了x以外的任意字符
+ ​   ​
+
+---
+
 ## 2016年7月5日
 ## nodejs读书笔记
 - 登入与登出，本质上是req.session.user变量标记的变动。signout的实现，就是使用res.redirect('/')重定向跳转到其他页面，并且设置user=null;  
-页面设置访问权限：原理是在每个页面的路由响应函数内，检查是否登录；为简化代码，利用路由中间件，在每个路由前加路由中间件, 可实现页面控制。
+  页面设置访问权限：原理是在每个页面的路由响应函数内，检查是否登录；为简化代码，利用路由中间件，在每个路由前加路由中间件, 可实现页面控制。
 ```js
 app.get('/reg', checkNotLogin);   
 app.get('/reg', function(req, res) {});  
@@ -34,7 +104,7 @@ if(error)
 <div>错误页面</div>
 ```
 - js异步调用原理  
-https://segmentfault.com/a/1190000002545312
+  https://segmentfault.com/a/1190000002545312
 ---
 ## 2016年7月4日
 ### 安装网页调试插件 devtool  
@@ -66,10 +136,11 @@ res.redirect : 重新定向，浏览器可以跳转至其他页面
 User.get  : 通过用户名获取已知用户  
 User.save : 将对用户对象的修改存入数据库  
 req.session.user : 向会话对象写入当前用户的信息  
-```  
+```
 
-4. chrome断点查询的插件（**明天安装！！**）：https://segmentfault.com/a/1190000004509016  
-5. 通过jshint检查代码的潜在bug：
+1. chrome断点查询的插件（**明天安装！！**）：https://segmentfault.com/a/1190000004509016  
+2. 通过jshint检查代码的潜在bug：
+
 http://www.liaoxuefeng.com/article/0014000752598322598e226abeb4b1dafaf6fba462f3da4000  
 Warning: JSLint will hurt your feelings.  
 
@@ -90,28 +161,28 @@ Warning: JSLint will hurt your feelings.
 ## 2016年7月2日
 ### js代码错误检查插件
 1. 安装jshint:  
-  `npm install jshint`  
-  `npm install jshint --save-dev`  
+   `npm install jshint`  
+   `npm install jshint --save-dev`  
 2. js代码在线纠错  
-  http://www.jslint.com/  
+   http://www.jslint.com/  
 
 ### 资料储备
 1. nodejs生成pdf文档  
-PDFKit（http://pdfkit.org/） 最专业的函数库，支持各种pdf文档的数据格式，只是使用起来比较复杂，适合专业开发者。  
-Wkhtmltopdf（https://npmjs.org/package/wkhtmltopdf） 将HTML转化成pdf文档的引擎，使用起来非常方便简单  
-PhantomJS（http://www.feedhenry.com/server-side-pdf-generation-node-js/） PhantomJS 是一个基于 WebKit 的服务器端 JavaScript API。它全面支持web而不需浏览器支持，其快速，原生支持各种Web标准： DOM 处理, CSS 选择器, JSON, Canvas, 和 SVG。 PhantomJS 可以用于 页面自动化 ， 网络监测 ， 网页截屏 ，以及 无界面测试 等。
-<br/>
-<br/>
+   PDFKit（http://pdfkit.org/） 最专业的函数库，支持各种pdf文档的数据格式，只是使用起来比较复杂，适合专业开发者。  
+   Wkhtmltopdf（https://npmjs.org/package/wkhtmltopdf） 将HTML转化成pdf文档的引擎，使用起来非常方便简单  
+   PhantomJS（http://www.feedhenry.com/server-side-pdf-generation-node-js/） PhantomJS 是一个基于 WebKit 的服务器端 JavaScript API。它全面支持web而不需浏览器支持，其快速，原生支持各种Web标准： DOM 处理, CSS 选择器, JSON, Canvas, 和 SVG。 PhantomJS 可以用于 页面自动化 ， 网络监测 ， 网页截屏 ，以及 无界面测试 等。
+   <br/>
+   <br/>
 2. 使用 Sublime + PlantUML 画出图示  
-http://www.jianshu.com/p/e92a52770832  
+   http://www.jianshu.com/p/e92a52770832  
 
-2. 设置全局变量  
-三种设置方法  
- --declare the variable without the var keyword  
- --add the variable to the global/GLOBAL object  
-用var声明的变量：remain local to a module；  
-不用var的变量： get attached to the global object.  
-`全局变量方便，但是不适用于大型项目，使用其他方法替代全局变量：  
+3. 设置全局变量  
+   三种设置方法  
+    --declare the variable without the var keyword  
+    --add the variable to the global/GLOBAL object  
+   用var声明的变量：remain local to a module；  
+   不用var的变量： get attached to the global object.  
+   `全局变量方便，但是不适用于大型项目，使用其他方法替代全局变量：  
 
 **eg:**  
 
@@ -160,9 +231,9 @@ Google
 1. 出现数据库连接错误提示：trying to open unclosed database  
    原因：同一个数据库，不能打开两次
    >相关技术：如何同时连接多个数据库  
-   `mongoose.connect()`只能连接一个数据库  
-   `mongoose.createConnection()`可以同时连接多个数据库  
-   参考资料：http://jayceefun.github.io/blog/2013/08/27/mongoose_multi_dbs/  
+   >`mongoose.connect()`只能连接一个数据库  
+   >`mongoose.createConnection()`可以同时连接多个数据库  
+   >参考资料：http://jayceefun.github.io/blog/2013/08/27/mongoose_multi_dbs/  
 
 2. ajax无法从前台获得数据，传入后台  
    解决：明早具体补充  
@@ -172,38 +243,38 @@ Google
 ### 为加强理解，对nodejs项目框架分析
 
 >bin  
-......www : 创建web服务器，配置监听port  
+>......www : 创建web服务器，配置监听port  
 >db  
-......schema  
-............news.js:新闻模型保存+记录保存预处理+将该模型输出到数据库的一张表中  
-......user.js : 用户模型保存+记录保存预处理+将该模型输出到数据库的一张表中  
-......db.js : 向控制台输出数据库的连接状态status  
-......dbHelper.js : 获取`./schema`中的模型，findUsr函数（findOne匹配，输出结果到entries）和addNews函数（获取传入数据并转化到News模型数据+保存函数**不懂这个model.pre('save')函数的调用机制**）  
-......jsonRes.js  
-lib  
-......hbsHelper.js : 获取moment模块，存储日期处理函数，并输出到外部供调用  
-......webHelper.js : 获取remarkable模块，存储函数并输出到外部供调用（目测该模块的用处是高亮网页的error信息）  
-node_modules:存放封装好的模块  
-public  
-......blog  
-............addNews.js : 增加新闻的ajax函数调用，验证登录信息并完成跳转  
-............login.js : 登录页面的ajax函数调用，调用发布提示  
-......img : 存放图片  
-......lib :  存档模板代码框架  
-......stylesheets : 存放css  
-route  
-......admin.js : 存放/admin路径下的路由，有页面展示和数据调用函数  
-......index.js : 根路径下的分支路由  
-views  
-......admin  
-............news.hbs : 新增新闻页面的`改动部分`  
-......error : 错误提示  
-......layouts : 展示层的框架们  
-......partials : 包含了`所有`页面内`不发生改动的部分`  
-.......gitgnore   
-......app.js : 项目的入口文件，配置模块引擎和默认静态资源映射  
-......config.js : 配置站点信息，和数据库连接信息  
-......package.json : 外部依赖项的路径  
+>......schema  
+>............news.js:新闻模型保存+记录保存预处理+将该模型输出到数据库的一张表中  
+>......user.js : 用户模型保存+记录保存预处理+将该模型输出到数据库的一张表中  
+>......db.js : 向控制台输出数据库的连接状态status  
+>......dbHelper.js : 获取`./schema`中的模型，findUsr函数（findOne匹配，输出结果到entries）和addNews函数（获取传入数据并转化到News模型数据+保存函数**不懂这个model.pre('save')函数的调用机制**）  
+>......jsonRes.js  
+>lib  
+>......hbsHelper.js : 获取moment模块，存储日期处理函数，并输出到外部供调用  
+>......webHelper.js : 获取remarkable模块，存储函数并输出到外部供调用（目测该模块的用处是高亮网页的error信息）  
+>node_modules:存放封装好的模块  
+>public  
+>......blog  
+>............addNews.js : 增加新闻的ajax函数调用，验证登录信息并完成跳转  
+>............login.js : 登录页面的ajax函数调用，调用发布提示  
+>......img : 存放图片  
+>......lib :  存档模板代码框架  
+>......stylesheets : 存放css  
+>route  
+>......admin.js : 存放/admin路径下的路由，有页面展示和数据调用函数  
+>......index.js : 根路径下的分支路由  
+>views  
+>......admin  
+>............news.hbs : 新增新闻页面的`改动部分`  
+>......error : 错误提示  
+>......layouts : 展示层的框架们  
+>......partials : 包含了`所有`页面内`不发生改动的部分`  
+>.......gitgnore   
+>......app.js : 项目的入口文件，配置模块引擎和默认静态资源映射  
+>......config.js : 配置站点信息，和数据库连接信息  
+>......package.json : 外部依赖项的路径  
 ```
 update(2016.7.2):  
 model.pre('save')函数的理解  
@@ -224,17 +295,17 @@ model.pre('save')函数的理解
    ../:回到上一层文件目录  
 
 4. 对应的js可以包含在对应的hbs文件中   
- **此处存疑** 关于addBlog.js的包含问题 暂解决，未理解  
+    **此处存疑** 关于addBlog.js的包含问题 暂解决，未理解  
 
 5. command+单击，进入变量、函数声明  
- 
+
 6. 断点调试的方法，仍然不太懂
 
 ### *node.js学习指南*PDF第五章（1-6节）学习总结  
 
 #### app.js文件  
 1. ```app.configure(function(){});```
-通过回调函数，设置app对应的Express模块的参数
+   通过回调函数，设置app对应的Express模块的参数
 2. ```app.set();```   设置参数  
    ```app.use();```   启用中间件  
 3. 心得体会：这几天学的内容繁多，对于新软件的使用也很不上手，很难理解页面的实现，之前主要靠重复调试得到想要的效果，对于原理仍然一知半解。今天在阅读书本之后，真正理解“app.js是入口文件”，整个项目文件，从app.js开始解析，首先获取模块，然后设置路由，接着在不同页面的跳转中，触发新的js文件，执行对应的函数，在控制台输出数据。项目从零碎的部件，得到线索能够串起来，对于理解上，有一个比较大的进步。
@@ -250,7 +321,7 @@ exports.index=function(req,res){
 1. 同一个路径(如'/login')可以绑定多个路由响应函数，但是按照顺序优先匹配第一个。
 2. next()的用处，转移控制权，就是用于服务上述情况，从当前匹配的函数，跳转至下一个匹配路径的规则。
 3. next()，也可以起到类似中间件的效果，提取相似请求的相同部分，结合页面模板和要显示的数据结合生成HTML。  
-eg.验证用户名存在与否；存在则展出，不存在则输出error。验证部分就可以插入next()
+   eg.验证用户名存在与否；存在则展出，不存在则输出error。验证部分就可以插入next()
 
 ### TotalFinder插件
 #### 安装习得  
@@ -265,14 +336,14 @@ eg.验证用户名存在与否；存在则展出，不存在则输出error。验
 连续两次遇到zip文件解压生成cpgz文件，cpgz解压后又生成zip文件
 > 导致这种情况的原因有一下几点：  
    1. zip文件已经损坏；  
-　　2. zip文件下载时没有下载完全；  
-　　3. 浏览器在下载或者下载完成zip文件时，对其进行了错误处理；  
-　　4. bug导致。  
+   2. zip文件下载时没有下载完全；  
+   3. 浏览器在下载或者下载完成zip文件时，对其进行了错误处理；  
+   4. bug导致。  
 
 首先验证一下你的zip文件md5 hash或者SHA1，如果校验显示不同，说明你的文件有损坏或者下载不完全。
 > Tips：  
-校验MD5 hash方法：打开终端，输入MD5，空格，然后输入需要验证的文件路径（可以直接将文件拖进去）  
-校验sha1：打开终端，输入shasum，空格， 然后输入需要验证的文件路径（可以直接将文件拖进去）
+> 校验MD5 hash方法：打开终端，输入MD5，空格，然后输入需要验证的文件路径（可以直接将文件拖进去）  
+> 校验sha1：打开终端，输入shasum，空格， 然后输入需要验证的文件路径（可以直接将文件拖进去）
 
 验证结果：两个校验码不同，文件损坏  
 
@@ -281,7 +352,7 @@ eg.验证用户名存在与否；存在则展出，不存在则输出error。验
 2016年7月4日，第二次连接数据库，采用同样方法失败，改用**绝对路径**成功
 mongod --dbpath /usr/local/Cellar/mongodb/3.2.7/data/db  
 
----  
+---
 
 ## 2016年6月29日
 
@@ -306,19 +377,19 @@ ajax:异步调用json数据对象，输出到html
 
 ### 问题整理
 1. mongoose模块已经通过命令行install但无法require  
-解决：  
-确认已经在node_modules文件夹中添加模块文件  
-在package.json文件中，还要再添加dev外部依赖项  
+   解决：  
+   确认已经在node_modules文件夹中添加模块文件  
+   在package.json文件中，还要再添加dev外部依赖项  
 
 2. http之间的状态码  
 
-|Type|  Reason-phrase| Note|
-| ------------- |:-------------:|:-----|
-|1XX |Informational  |信息性状态码，表示接受的请求正在处理|
-|2XX |Success        |成功状态码，表示请求正常处理完毕|
-|3XX |Redirection    |重定向状态码，表示需要客户端需要进行附加操作|
-|4XX |Client Error   |  客户端错误状态码，表示服务器无法处理请求|
-|5XX |Server Error   |  服务器错误状态码，表示服务器处理请求出错|
+| Type | Reason-phrase | Note                   |
+| ---- | :-----------: | :--------------------- |
+| 1XX  | Informational | 信息性状态码，表示接受的请求正在处理     |
+| 2XX  |    Success    | 成功状态码，表示请求正常处理完毕       |
+| 3XX  |  Redirection  | 重定向状态码，表示需要客户端需要进行附加操作 |
+| 4XX  | Client Error  | 客户端错误状态码，表示服务器无法处理请求   |
+| 5XX  | Server Error  | 服务器错误状态码，表示服务器处理请求出错   |
 
 3.伪造数据与增删查改  
 
@@ -390,8 +461,8 @@ person.create({
         //没有附加条件就输出所有记录的第一条
         console.log(data);
     })
-```  
-  
+```
+
 ---
 ## 2016年6月28日
 
@@ -406,7 +477,7 @@ person.create({
 1. schema：数据库模型骨架
 2. model：来源于schema的模型，有属性和函数
 3. entity：根据model创建的实例
-*Schema生成Model，Model创造Entity*
+   *Schema生成Model，Model创造Entity*
 
 ### mongoDB数据库
 1. 在/node_modules中放入mongoose文件夹
@@ -575,7 +646,7 @@ router.get('/login', function(req,res,next) {
 
 module.exports = router; //开放router的对外接口
 ```
-  
+
 ***
 
 
