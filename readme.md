@@ -1,4 +1,38 @@
 # 学习日记
+## 2016年7月10日
+### mongodb分页模块
+1. 传统sql分页  
+row_number分页思想：取第(pageIndex*pageSize)到第(pageIndex*pageSize + pageSize)  
+时间戳（一个字符序列，唯一地标识某一刻的时间）：Web 页面通过记录的创建时间的有序性质来取数据  
+2. mongodb分页：  
+参数：  
+PageIndex    当前页  
+PageSize      每页记录数  
+QueryParam[]  其他的查询字段  
+```js
+db.test.find({xxx...xxx}).sort({"amount":1}).skip(10).limit(10)   
+//思想等同于跳过前M*N条记录，取N条记录
+//存在的性能问题：不要轻易使用Skip来做查询，否则数据量大了就会导致性能急剧下降，这是因为Skip是一条一条的数过来的，多了自然就慢了。
+```
+
+
+方法一：(数据量小时使用)  
+查询第一页的数据：`db.test.find().sort({"age":1}).limit(2);`  
+查询第二页的数据：`db.test.find().sort({"age":1}).skip(2).limit(2);`  
+方法二：(数据量大时使用，因为skip函数跳过记录消耗很多性能)  
+查询第一页的数据：`db.test.find().sort({"age":1}).limit(2);  //记为p1`  
+查询第二页的数据：获取第一页最后一条记录的值，然后排除前面的记录，就能获取到新的记录了  
+`while(p1.hasNext()) latest=p1.next;`  
+`db.test.find({"age:{"$gt:latest.age}}).sort({"age":1}).limit(2);`  
+
+默认检索：`db.SortTest.find()`  
+排序索引：`db.SortTest.find().sort({name: -1})` ，则对name字段降序  
+同时多个字段的排序索引：`db.SortTest.find().sort( { age: -1 , name: 1} );`   
+返回结果集的条数：`db.test.count()`
+
+
+---
+
 ## 2016年7月8日
 ### 破解totalFinder
 1. 附件里面的codesign是从10.9.4系统的下复制出来的codesign文件。
