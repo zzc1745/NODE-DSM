@@ -30,6 +30,26 @@ db.test.find({xxx...xxx}).sort({"amount":1}).skip(10).limit(10)
 同时多个字段的排序索引：`db.SortTest.find().sort( { age: -1 , name: 1} );`   
 返回结果集的条数：`db.test.count()`
 
+### 使用async完成同步 each用法 
+```js
+var sqls = {
+    'insertSQL': 'insert into t_user(name) values("conan"),("fens.me")',
+    'selectSQL': 'select * from t_user limit 10',
+    'deleteSQL': 'delete from t_user',
+    'updateSQL': 'update t_user set name="conan update"  where name="conan"'
+};
+
+var tasks = ['deleteSQL', 'insertSQL', 'selectSQL', 'updateSQL', 'selectSQL'];
+async.eachSeries(tasks, function (item, callback) {
+    console.log(item + " ==> " + sqls[item]);
+    conn.query(sqls[item], function (err, res) {
+        console.log(res);
+        callback(err, res);
+    });
+}, function (err) {
+    console.log("err: " + err);
+});
+```
 
 ---
 
