@@ -1,4 +1,22 @@
 # 学习日记
+## 2016年7月12日
+### 
+按照添加时间展示技术新闻：  
+News.find().sort("meta.createAt":-1);  //以meta.createAt为用来排序的键，-1表示降序排列  
+在blog.hbs中，调用hbsHelper.js中为moment模块声明的外部调用函数需要用到一下路由设置代码：  
+```js
+*var hbsHelper = require('./lib/hbsHelper');*
+var hbs = exphbs.create({
+  partialsDir: 'views/partials',
+  layoutsDir: "views/layouts/",
+  defaultLayout: 'main',
+  extname: '.hbs',
+  *helpers: hbsHelper*
+  //指定handlebar的渲染
+});
+```
+
+---
 ## 2016年7月10日
 ### mongodb分页模块
 1. 传统sql分页  
