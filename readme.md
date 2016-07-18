@@ -1,4 +1,69 @@
 # 学习日记
+## 2016年7月18日
+#### nodejs中async库
+1.`series(tasks, [callback])` （多个函数依次执行，之间没有数据交换）
+有多个异步函数需要依次调用，一个完成之后才能执行下一个。各函数之间没有数据的交换，仅仅需要保证其执行顺序。这时可使用series。  
+```js
+step1(function(err, v1) {
+        step2(function(err, v2) {
+                step3(function(err, v3) {
+                        // do somethig with the err or values v1/v2/v3
+                }
+        }
+});
+```
+使用async来处理  
+```js
+var async = require(‘async’) 
+async.series([step1, step2, step3],
+    function(err, values) {
+        // do somethig with the err or values v1/v2/v3
+});
+```
+举例(依次调用step1、step2、step3，并自动处理每个回调中的错误)：
+```js
+var async = require(‘async’) async.series([function(cb) {
+        step1(function(err, v1) {
+                // do something with v1
+                cb(err, v1);
+        }),
+        function(cb) {
+                step2(...)
+        },
+        function(cb) {
+                step3(...)
+        }],
+        function(err, values) {
+                // do somethig with the err or values v1/v2/v3
+        });
+        // 如果任何一个函数向它的回调函数中传了一个error，则后面的函数都不会被执行，并且将会立刻会将该error以及已经执行了的函数的结果，传给series中最后那个callback。 当所有的函数执行完后（没有出错），则会把每个函数传给其回调函数的结果合并为一个数组，传给series最后的那个callback。 还可以json的形式来提供tasks。
+```
+2.`parallel(tasks, [callback])` （多个函数并行执行）
+传给最终callback的数组中的数据按照tasks中声明的顺序，而不是执行完成的顺序。 如果某个函数出错，则立刻将err和已经执行完的函数的结果值传给parallel最终的callback。其它未执行完的函数的值不会传到最终数据，但要占个位置。  
+```js
+async.parallel({
+        a: function(cb) {
+                t.fire(‘a400′, cb, 400)
+        },
+        b: function(cb) {
+                t.fire(‘c300′, cb, 300)
+        }
+},
+function(err, results) {
+        log(’3 err: ‘, err); // -> undefined
+        log(’3 results: ‘, results); // -> { b: ‘c300′, a: ‘a400′ }
+});
+```
+3.`waterfall(tasks, [callback])` （多个函数依次执行，且前一个的输出为后一个的输入）  
+4.`auto(tasks, [callback])` （多个函数有依赖关系，有的并行执行，有的依次执行）  
+5.`whilst(test, fn, callback)`（用可于异步调用的while）  
+6.`until(test, fn, callback)` （与while相似，但判断条件相反）  
+7.`queue` （可设定worker数量的队列）  
+8.`iterator(tasks)` （将几个函数包装为iterator）  
+9.`apply(function, arguments..)` （给函数预绑定参数）  
+10.`nextTick(callback)` （在nodejs与浏览器两边行为一致）  
+[nodejs中Async库介绍](http://my.oschina.net/huangsz/blog/176203) 
+---
 ## 2016年7月17日
 #### async
 ```js
