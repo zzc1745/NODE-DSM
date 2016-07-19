@@ -1,4 +1,123 @@
 # 学习日记
+## 2016年7月19日
+#### 匿名函数
+```js
+//函数声明
+function abc(x,y){  
+  return x+y;  
+}  
+//function对象，运用构造函数创建新函数
+var abc = new Function("x","y","return x*y;");   
+//调用匿名函数，使用()将匿名函数括起来，然后后面再加一对小括号（包含参数列表）
+alert((new Function("x","y","return x*y;"))(2,3));  
+```
+
+
+
+#### js函数调用方法：
+函数调用自带两个参数：this 和 arguments(是函数内的固有变量,以数组的形式保存了调用方给该函数传入的所有参数)  
+this关键字引用的是,包含它的那个函数,作为某个对象的方法被调用时,所属的那个对象。  
+1.方法调用模式。  
+请注意this此时**指向myobject**。  
+```js
+/*方法调用模式*/
+    var myobject={
+            value:0,
+            inc:function(){
+                    alert(this.value)
+                }
+        }
+    myobject.inc()
+```
+2.函数调用模式  
+请注意this此时**指向window**  
+```js
+/*函数调用模式*/
+    var add=function(a,b){
+        alert(this)//this被绑顶到window
+            return a+b;
+        }
+    var sum=add(3,4);
+    alert(sum)
+```
+3.apply调用模式  
+```js
+/*apply*/
+    //注意使用了上面的sum函数
+    //与myobject
+    //这中调用方式的优点在于可以指向this指向的对象。
+    //apply的第一个参数就是this指针要指向的对象
+    var arr=[10,20];
+    var sum=add.apply(myobject,arr);
+    alert(sum);
+```
+
+
+## js中的fn函数
+jQuery.fn===jQuery.prototype  
+$.fn是指jquery的命名空间，加上fn上的方法及属性，会对jquery实例每一个有效。   
+如扩展$.fn.abc(),即$.fn.abc()是对jquery扩展了一个abc方法,那么后面你的每一个jquery实例都可以引用这个方法了. 
+那么你可以这样子：$("#div").abc();   
+
+jQuery为开发插件提拱了两个方法，分别是：   
+jQuery.extend(object);为扩展jQuery类本身.为类添加新的方法。   
+jQuery.fn.extend(object);给jQuery对象添加方法。
+
+
+[巧妙运用prototype属性原型链创建对象](http://blog.csdn.net/liuqiwen0512/article/details/8089690)
+```js
+    //jquery的写法
+    function person(na){
+         return new person.prototype.init(na);
+           }
+           person.prototype={
+           init:function(na){
+                this.name=na;
+                return this;
+            },
+            outName:function(){
+                alert(this.name);
+            },
+            iptName:function(na){
+                this.name=na;
+            }
+           }
+             person.prototype.init.prototype=person.prototype;
+             //person的原型链赋值给person.prototype.init的原型链，这种方式完美的解决了上面需要加判断的问题，同时也对代码性能进行了优化。
+        var person1=person("liuqiwen1");
+        person1.outName(); //输出liuqiwen1
+        var person2=person("liuqiwen2");
+        person2.outName(); //输出liuqiwen2 
+        person2.iptName("liuqiwen3"); 
+        person2.outName(); //输出liuqiwen3
+```
+**总结**：  
+最初方法：  
+创建“创建对象function” ——> 赋值 ——> 创建“添加属性function”(一般赋予方法) ——> 为对象指向方法 ——> new对象 ——> 调用function  
+改进之后：  
+创建“创建对象function” ——> 创建“添加属性+赋值function” ——> new对象 ——> 调用function  
+最终优化：  
+创建“new对象+创建对象+添加属性+赋值”function” ——> 跳过new的关键字生成object ——> 调用function  
+
+#### 分页查询函数
+`if(err) return next(err);` ：如果出错，转入下一个路由，并传入错误参数err
+**未完 **
+
+
+#### DOM对象和jQury对象之间的相互转换
+如果获取的是jQuery对象，则在变量前加上$     `var $variable = jQuery对象`  
+如果获取的是DOM对象   `var variable = DOM对象`  
+jQuery对象->DOM对象:  
+```js
+ var $cr = $("#cr");
+ var cr  = $cr[0];
+```
+DOM对象 -> jQuery对象:  
+```js
+var cr = doucument.getElementById("cr");
+var $cr = $(cr);
+```
+---
 ## 2016年7月18日
 #### nodejs中async库
 1.`series(tasks, [callback])` （多个函数依次执行，之间没有数据交换）
@@ -63,6 +182,8 @@ function(err, results) {
 9.`apply(function, arguments..)` （给函数预绑定参数）  
 10.`nextTick(callback)` （在nodejs与浏览器两边行为一致）  
 [nodejs中Async库介绍](http://my.oschina.net/huangsz/blog/176203) 
+
+
 ---
 ## 2016年7月17日
 #### async
