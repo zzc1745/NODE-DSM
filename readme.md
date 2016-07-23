@@ -1,4 +1,140 @@
 # 学习日记
+## 2016年7月23日
+#### 编写分页查询
+1. 以登陆模块为基础，理清函数调用顺序与调用原理。  
+输入登录名与登录密码后，点击登陆button，触发ajax，通过post的方式获取到表单数据  
+——>然后调用findUsr函数，获得一个entries实例  
+——>将entries实例回调传入登陆模块ajax中的success函数  
+```js
+$("body").on('click', '#loginBtn', doLogin);
+router.post('/login', function(req, res, next) {
+  dbHelper.findUsr(req.body, function (success, doc) {
+    res.send(doc);
+  })
+});
+```
+2. 分页模块同理思路  
+点击页码li，触发ajax，通过get的方式获取currentPage，totalPage数据。  
+——>调用db中的findNews函数，获得第X页的5条news内容，渲染到页面  
+3. 分析难点  
+修改paginator插件的js，将页面的查询页码传入ajax中  
+把totalPage传入js，修改页码页数  
+4. 解决方法   
+通过中的查询条件，修改page值  
+```/blog/?page=2```
+#### Express框架中request 和 response 对象的具体介绍：
+```
+Request 对象 - request 对象表示 HTTP 请求，包含了请求查询字符串，参数，内容，HTTP 头部等属性。常见属性有：
+req.app：当callback为外部文件时，用req.app访问express的实例
+req.baseUrl：获取路由当前安装的URL路径
+req.body / req.cookies：获得「请求主体」/ Cookies
+req.fresh / req.stale：判断请求是否还「新鲜」
+req.hostname / req.ip：获取主机名和IP地址
+req.originalUrl：获取原始请求URL
+req.params：获取路由的parameters
+req.path：获取请求路径
+req.protocol：获取协议类型
+req.query：获取URL的查询参数串
+req.route：获取当前匹配的路由
+req.subdomains：获取子域名
+req.accpets（）：检查请求的Accept头的请求类型
+req.acceptsCharsets / req.acceptsEncodings / req.acceptsLanguages
+req.get（）：获取指定的HTTP请求头
+req.is（）：判断请求头Content-Type的MIME类型
+
+Response 对象 - response 对象表示 HTTP 响应，即在接收到请求时向客户端发送的 HTTP 响应数据。常见属性有：
+res.app：同req.app一样
+res.append（）：追加指定HTTP头
+res.set（）在res.append（）后将重置之前设置的头
+res.cookie（name，value [，option]）：设置Cookie
+opition: domain / expires / httpOnly / maxAge / path / secure / signed
+res.clearCookie（）：清除Cookie
+res.download（）：传送指定路径的文件
+res.get（）：返回指定的HTTP头
+res.json（）：传送JSON响应
+res.jsonp（）：传送JSONP响应
+res.location（）：只设置响应的Location HTTP头，不设置状态码或者close response
+res.redirect（）：设置响应的Location HTTP头，并且设置状态码302
+res.send（）：传送HTTP响应
+res.sendFile（path [，options] [，fn]）：传送指定路径的文件 -会自动根据文件extension设定Content-Type
+res.set（）：设置HTTP头，传入object可以一次设置多个头
+res.status（）：设置HTTP状态码
+res.type（）：设置Content-Type的MIME类型
+```
+
+## 2016年7月22日
+#### mongoose的populate，查询ref文档
+1.作用：在当前查询到的文档基础上，在通过ref引用查询一个新的属性。  
+2.使用ref时，关联的model只匹配_id字段  
+3.引用多个属性时， populate(ref1,ref2) ref1和ref2在源文档的顺序必须一致。  
+
+#### async函数整理
+async主要实现了三个部分的流程控制功能：  
+集合: Collections  
+流程控制: Control Flow  
+工具类: Utils  
+```
+1). 集合: Collections
+each: 如果想对同一个集合中的所有元素都执行同一个异步操作。 
+map: 对集合中的每一个元素，执行某个异步操作，得到结果。所有的结果将汇总到最终的callback里。与each的区别是，each只关心操作不管最后的值，而map关心的最后产生的值。
+filter: 使用异步操作对集合中的元素进行筛选, 需要注意的是，iterator的callback只有一个参数，只能接收true或false。
+reject: reject跟filter正好相反，当测试为true时则抛弃
+reduce: 可以让我们给定一个初始值，用它与集合中的每一个元素做运算，最后得到一个值。reduce从左向右来遍历元素，如果想从右向左，可使用reduceRight。
+detect: 用于取得集合中满足条件的第一个元素。
+sortBy: 对集合内的元素进行排序，依据每个元素进行某异步操作后产生的值，从小到大排序。
+some: 当集合中是否有至少一个元素满足条件时，最终callback得到的值为true，否则为false.
+every: 如果集合里每一个元素都满足条件，则传给最终回调的result为true，否则为false
+concat: 将多个异步操作的结果合并为一个数组。
+```
+```
+2). 流程控制: Control Flow
+*series*: 串行执行，一个函数数组中的每个函数，每一个函数执行完成之后才能执行下一个函数。
+**parallel**: 并行执行多个函数，每个函数都是立即执行，不需要等待其它函数先执行。传给最终callback的数组中的数据按照tasks中声明的顺序，而不是执行完成的顺序。
+whilst: 相当于while，但其中的异步调用将在完成后才会进行下一次循环。
+doWhilst: 相当于do…while, doWhilst交换了fn,test的参数位置，先执行一次循环，再做test判断。
+until: until与whilst正好相反，当test为false时循环，与true时跳出。其它特性一致。
+doUntil: doUntil与doWhilst正好相反，当test为false时循环，与true时跳出。其它特性一致。
+forever: 无论条件循环执行，如果不出错，callback永远不被执行。
+waterfall: 按顺序依次执行一组函数。每个函数产生的值，都将传给下一个。
+compose: 创建一个包括一组异步函数的函数集合，每个函数会消费上一次函数的返回值。把f(),g(),h()异步函数，组合成f(g(h()))的形式，通过callback得到返回值。
+applyEach: 实现给一数组中每个函数传相同参数，通过callback返回。如果只传第一个参数，将返回一个函数对象，我可以传参调用。
+queue: 是一个串行的消息队列，通过限制了worker数量，不再一次性全部执行。当worker数量不够用时，新加入的任务将会排队等候，直到有新的worker可用。
+cargo: 一个串行的消息队列，类似于queue，通过限制了worker数量，不再一次性全部执行。不同之处在于，cargo每次会加载满额的任务做为任务单元，只有任务单元中全部执行完成后，才会加载新的任务单元。
+auto: 用来处理有依赖关系的多个任务的执行。
+iterator: 将一组函数包装成为一个iterator，初次调用此iterator时，会执行定义中的第一个函数并返回第二个函数以供调用。
+apply: 可以让我们给一个函数预绑定多个参数并生成一个可直接调用的新函数，简化代码。
+nextTick: 与nodejs的nextTick一样，再最后调用函数。
+**times**: 异步运行,times可以指定调用几次，并把结果合并到数组中返回
+timesSeries: 与time类似，唯一不同的是同步执行
+```
+
+```
+3). 工具类: Utils
+memoize: 让某一个函数在内存中缓存它的计算结果。对于相同的参数，只计算一次，下次就直接拿到之前算好的结果。
+unmemoize: 让已经被缓存的函数，返回不缓存的函数引用。
+log: 执行某异步函数，并记录它的返回值，日志输出。
+dir: 与log类似，不同之处在于，会调用浏览器的console.dir()函数，显示为DOM视图。
+noConflict: 如果之前已经在全局域中定义了async变量，当导入本async.js时，会先把之前的async变量保存起来，然后覆盖它。仅仅用于浏览器端，在nodejs中没用，这里无法演示。
+```
+
+#### Bootstrap分页插件--Bootstrap Paginator
+1.官网下载bootstrap-paginator.js文件，在因为该文件之前，需要先引用jquery.js、bootstrap.css  
+2.在html中插入代码`<ul id="page-box" class="pagination"></ul>`  
+3.添加js代码，自动生成一个页码框  
+```js
+ var options = {
+        size:"small",
+        bootstrapMajorVersion:3,
+        currentPage: 3,
+        numberOfPages: 5,
+        totalPages:11
+    }
+   $('#page-box').bootstrapPaginator(options);
+```
+4.自定义修改bootstrap-paginator.js
+
+---
+
 ## 2016年7月19日
 #### 匿名函数
 ```js
