@@ -1,5 +1,160 @@
 # 学习日记
+## 2016年8月2日
+#### 埋一个坑 
+利用jquery pagination分页  
+[jquery pagination](http://www.zhangxinxu.com/jq/pagination_zh/)  
+利用bootstrap paginator分页  
+[bootstrap paginator](http://www.jb51.net/article/85368.html)  
+[bootstrap paginator](http://jingpin.jikexueyuan.com/article/29434.html)
+
+先套用老师模板试试，使用url获取变量
+疑问：href="{{#le pageNumber 1}}?{{else}}?page2={{reduce pageNumber 1}}{{/le}}" aria-label="Previous"
+这里的大括弧的对应？  #存在的不同
+
+[angularJS](http://www.runoob.com/angularjs/angularjs-tutorial.html)
+## 2016年7月30日 
+#### gulp安装
+1. 先调用npm全局安装
+2. 再在项目中本地安装  
+需要安装两次的原因：不污染项目环境，并且在更新模块的时候不容易出错（由于不同版本的gulp导致的错误）  
+`tip：查看某个应用程序的安装路径，以node为例，在terminal输入which node即可返回路径。`  
+
+#### gulp使用
+1. 在项目根目录下生成gulpfile.js
+2. 在gulpfile.js文件中创建task列表
+3. 在命令行输入 gulp [task_name]即可启动更新
+
+#### gulpfile.js编写
+
+----
+## 2016年7月29日
+#### npm全局安装模块(mac端)
+问题:  
+`Error: EACCES: permission denied, mkdir '/usr/local/lib/node_modules/gulp'`  
+解决方法:  
+1. 设置 NODE_PATH变量：`export NODE_PATH=/usr/local/lib/node_modules`  
+2. 使用sudo解决npm中由于权限产生的的EACCES错误  
+具体步骤:  
+>npm config get prefix  //查看当前全局路径  
+vi ~/.bash_profile    //进入vi编辑模式添加下行环境配置  
+export NODE_PATH=/usr/local/lib/node_modules  
+source ~/.bash_profile  //使.bash_profile生效  
+
+#### 几个常见的“npm ERR! Error”
+1.**`npm ERR! Error: ENOENT, lstat`**  
+解决办法：
+```
+npm config set user 0 
+npm config set unsafe-perm true
+```
+2.**`npm ERR! Error: No compatible version found `**  
+解决办法：升级node版本再来一次  
+```
+npm install -g n
+n stable
+```
+3.**`npm ERR! Error: EACCES, mkdir`**  
+解决办法：权限问题，加个sudo再来一次
+```
+sudo npm install -g module_name
+```
+ 
+#### vi编辑器基本命令
+1. vi的启动与退出  
+vi:进入vi临时缓冲区  
+vi file1:如果file1文件不存在，将建立此文件；如该文件存在，则将其拷贝到一个临时缓冲区。光标定位在该缓冲区第1行第1列的位置上。  ins
+:wq:将编辑缓冲区的内容写入文件保存，并退出  
+:q!(或:quit)：强制退出vi，不保存  
+2. 切换模式  
+esc：从输入模式切换到命令模式  
+A/a/I/i/O/o:从命令模式切换到输入模式  
+2. 在文件中移动光标　　  
+h：向左移动一个字符　　  
+l：向右移动一个字符　　  
+j：向下移动一行　　  
+k：向上移动一行　　  
+^（即Shift+6）：移动到当前行的开头处　　  
+$（即Shift+4）：移动到当前行的结尾处　　  
+H（大写）:使光标移动到屏幕的顶部　　  
+M（大写）:使光标移动到屏幕的中间　　  
+L（大写）:使光标移动到屏幕的底部　　  
+Ctrl+b：上滚一屏。　　  
+Ctrl+f：下滚一屏。　　  
+Ctrl+d：下滚半屏。　　  
+Ctrl+u: 上滚半屏。
+2. 插入文本  
+（1）添加：  
+●输入a后，在光标的右边插入文本　　  
+●输入A，在一行的结尾处添加文本　　  
+（2）插入：　　  
+●通过在命令模式下输入i，在光标的左边插入文本　  
+●通过在命令模式下输入I，在行首插入文本　  
+（3）插入新行：　  
+●输入o，在当前光标位置下面打开一行　　  
+●输入O，在当前光标位置上面打开一行  
+
+#### 解决sublime安装插件失败问题
+错误提示：  
+`sublime package control 出现There are no packages available for installation`
+错误原因:Sublime Text/preferences/package settings/package Control/setting default文件中，
+```
+"channels": [
+       * "http://127.0.0.1:8080/Documents/channel_v3.json"* //无法获取该网址内容
+    ]
+```
+解决方法：自行下载channel_v3.json文件，并修改setting default中的channels路径
+---
+
 ## 2016年7月28日
+#### Node.js express获取参数的三种方法
+>
+- `Checks route params (req.params), ex: /user/:id`  
+- `Checks query string params (req.query), ex: ?id=12`  
+- `Checks urlencoded body params (req.body), ex: id=`  
+
+1、例如：127.0.0.1:3000/index，这种情况下，我们为了得到index，我们可以通过使用req.params得到，通过这种方法我们就可以很好的处理Node中的路由处理问题，同时利用这点可以非常方便的实现MVC模式；  
+2、例如：127.0.0.1:3000/index?id=12，这种情况下，这种方式是获取客户端get方式传递过来的值，通过使用req.query.id就可以获得，类似于PHP的get方法；  
+3、例如：127.0.0.1：300/index，然后post了一个id=2的值，这种方式是获取客户端post过来的数据，可以通过req.body.id获取，类似于PHP的post方法；  
+
+
+#### git仓库管理
+1. 新建远程仓库，新建本地仓库。
+2. 利用https关联
+3. 在关联时，出现错误fatal:remote origin already exits   
+在push时，出现错误:Permission denied publickey . fatal Could not read from remote repository.  
+*解决方法：  
+先删除远程仓库 git remote rm origin   
+再添加远程仓库 git remote add origin https:……………………  
+*
+
+#### handlebars模板引擎语法归纳  
+**行级表达式**  
+{{表达式}}，两个大括弧：返回一个html编码的HTML-escape过的值  
+{{{表达式}}}，三个大括弧：可以防止某些html字符被转义，如“/”、“:”等特殊字符，并非指标签  
+handlebars.SafeString()：返回不会被转移的字符串  
+**块级表达式**  
+块级表达式Helpers：调用模板，并且可以使用不同的上下文  
+1. 上下文：option参数的fn属性，调用上下文  
+2. 路径  
+①嵌套路径：在当前上下文（当前的json数据）中寻找嵌套属性  
+②“../”定位到父级上下文中，在父级模板作用域中寻找属性  
+{{./name}}、{{this/name}}、{{this.name}} 三者相同  
+3. 注释  
+  {{!注释内容}} 或者 {{!--注释内容--}}  
+4. 辅助方法  
+利用helpers（在这次的项目中，即为hbsHelper.  js文件中的函数）接受处理会计元素当前此刻的上下文（类似于数组中的某一组）  
+内建helpers：  
+①with：切换上下文，其辱到某个{{}}中去（利用路径）  
+②each：循环输出上下文中的内容，用this指代单条内容，在上下文为空时激活else条件  
+```
+  {{#each}}
+  {{@index}} 生成当前循环索引值
+  {{@key}} 对object类型的循环
+  {{/each}}
+```
+③if：条件，条件判断返回值为false、undefined、null、“”、[]或0则不渲染  
+④unless：if的反向  
+⑤log：输出  
 ---
 ## 2016年7月23日
 #### 编写分页查询
@@ -133,7 +288,7 @@ noConflict: 如果之前已经在全局域中定义了async变量，当导入本
     }
    $('#page-box').bootstrapPaginator(options);
 ```
-4.自定义修改bootstrap-paginator.js
+4.编写自己的代码js响应文件
 
 ---
 

@@ -17,7 +17,7 @@ function doPublic() {
             'title': $("#news-title").val(),
             'content': $("#news-content").val(),
             //id的出处和news.js中定义的不同?
-            'id': $.cookie('id')
+            'id': $.cookie('id')   //把id存入cookie里
             // 'title' : $('#amazing1').val(),
         }),
         success: function(result) {
@@ -26,6 +26,7 @@ function doPublic() {
            }else{
                alert("发布成功");
            }
+            location.href="/blog";
         }
     })
 }

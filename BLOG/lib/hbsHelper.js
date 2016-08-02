@@ -5,20 +5,20 @@ var moment = require('moment');
 moment.locale('zh-cn');
 
 module.exports = {     //模块输入函数,在外部调用
-
+    //时间间隔计算
     timeFromNow: function (date) {
         return moment(date).fromNow();
     },
-
+    //时间格式显示
     formatDate: function (date) {
         return moment(date).format('LL');  ;
     },
-
+    //转换成数字的类型
     number: function(value) {
         return Number(value);
     },
 
-    // <
+    // <  升序排列,非升序则调整
     lt: function (value1, value2, block) {
         if (Number(value1) < Number(value2)) {
             return block.fn(this);
@@ -53,7 +53,7 @@ module.exports = {     //模块输入函数,在外部调用
             return block.inverse(this);
         }
     },
-
+    // 两数差值
     reduce: function (value1, value2) {
         return Number(value1) - Number(value2);
     },
@@ -89,7 +89,8 @@ module.exports = {     //模块输入函数,在外部调用
     },
     add: function (value1, value2) {
         return Number(value1) + Number(value2);
-    },
+    }
+    // ,
     // reduce: function (value1, value2) {
     //     return Number(value1) - Number(value2);
     // }

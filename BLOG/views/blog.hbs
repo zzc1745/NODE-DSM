@@ -1,6 +1,6 @@
 <div class="blog-container container-fluid">
     <div class="header row">
-        <span class="header-title">FOODPORN</span>
+        <a href="/blog"><span class="header-title">FOODPORN</span></a>
         <ul class="user-bar col-md-3">
             <li class="col-md-2">
                 <i class="fa fa-envelope"></i>
@@ -30,11 +30,14 @@
             <li>语言</li>
         </ul>
     </div>
+    <div class="blogs-and-pages">
     {{#each entries}}
+        <!--each表示对同一集合中的所有元素做同一异步操作-->
         <div class="blog-content">
             <div class="blog-title">
-                <h5>{{title}}</h5>
-                <span class="blog-date">创建于{{meta.createAt}}</span>
+                <a><h4>{{title}}</h4></a>
+                <span class="blog-date">创建于{{formatDate meta.createAt}}</span>
+                <span class="blog-update">更新于{{formatDate meta.updateAt}}</span>
             </div>
             <div class="blog-text">
                 <!--//content需要转码,否则出现<p>content</p>,所以需要三个大括号-->
@@ -42,6 +45,34 @@
             </div>
         </div>
     {{/each}}
+    <!--<div class="pagination"></div>-->
+    <!--&lt;!&ndash;<ul id="page-box" class="pagination pagination-lg"></ul>&ndash;&gt;我的原始分页-->
+    <div class="page-box">
+        <nav>
+            <ul class="pagination">
+                <li>
+                    <a href="{{#le pageNumber 1}}?page={{reduce pageNumber 1}}{{/le}}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {{#times pageCount 1 pageCount}}
+                    <li {{#equals pageNumber this.step}}class="active" {{/equals}}>
+                            <a href="?page={{step}}{{#if recommend}}&recommend={{recommend}}{{/if}}{{#if type}}&type={{type}}{{/if}}">{{step}}</a>
+                        <!--如果recommend和type值非空,才会在url中出现这一段新增字符串&recommend=  &type=  -->
+                    </li>
+                {{/times}}
+                <li>
+                    <a href="{{#ge pageNumber pageCount}}?page={{reduce pageNumber 1}}{{/ge}}" aria-label="after">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>    
+    <div class="clear-both"></div>
+    </div>
+    <div class="clear-both"></div>
 </div>
 
 <script src="/blog/profile.js"></script>
+<!--<script src="/blog/page-box.js"></script>-->

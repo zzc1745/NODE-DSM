@@ -22,6 +22,7 @@ function doAddUser(){
             }else{
                 alert("注册成功! ");
             }
+            location.href="/login";
         }
     })
 };

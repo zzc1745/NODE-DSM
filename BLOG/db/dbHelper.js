@@ -5,7 +5,7 @@ var User = require('./schema/user');
 var News = require('./schema/news');
 
 var webHelper = require('../lib/webHelper');
-
+var async = require('async');
 // var md = webHelper.Remarkable();
 
 //用户登录的查找函数
@@ -76,7 +76,7 @@ exports.addUser = function(data, cb){
 
 //添加新闻函数
 exports.addNews = function(data, cb) {
-    // data.content = md.render(data.content);
+    // data.content = md.render(data.content);  //用在remarkable里面
     var news = new News({
         title: data.title,
         content: data.content,
@@ -92,19 +92,104 @@ exports.addNews = function(data, cb) {
 };
 
 
-//展示新闻函数
-exports.getNews = function (req,cb) {
-    //在News的模型里面找到所有数据,并且对找到的所有结果,执行同一个操作函数
-    //find函数返回的是保存了数据的字符串(数组) 因此如果需要调用数据,要先转变成对象
-    News.find().exec(function (err,docs) {
-        //定义一个数组,用来保存数据
-        var newsList = new Array();
-        for(var i=0; i<docs.length; ++i ){
-            //按照次序,把docs转变得到的对象数组,逐个push进入空数组
-            //数组修改器--$push
-            newsList.push(docs[i].toObject());
+//展示新闻函数   非分页展示
+// exports.getNews = function (req,cb) {
+//     //在News的模型里面找到所有数据,并且对找到的所有结果,执行同一个操作函数
+//     //find函数返回的是保存了数据的字符串(数组) 因此如果需要调用数据,要先转变成对象
+//     News.find()
+//         .sort({"meta.createAt": -1})
+//         .populate('author')
+//         .exec(function (err,docs) {
+//         //定义一个数组,用来保存数据
+//         var newsList = new Array();
+//         for(var i=0; i<docs.length; ++i ){
+//             //按照次序,把docs转变得到的对象数组,逐个push进入空数组
+//             //数组修改器--$push
+//             newsList.push(docs[i].toObject());
+//         }
+//         cb(true,newsList);
+//     });
+// };
+
+// 原本打算自己用paginator做的部分
+// // 分页展示新闻列表
+// exports.getNews = function (req,cb){
+//     var page= 1;
+//     console.log(page);
+//     // var page = $('#page-box .active').innerText;
+//     var queryPage = page || 1;
+//     console.log(queryPage);
+//     // var queryPage= req.query.page || 1;   //需要查询的页面页码
+//     this.pageQuery(2, 3, News, 'author', {}, {created_time:'desc'},function (err,data) {
+//     // this.pageQuery(queryPage, 5, News, 'author', {}, {created_time:'desc'},function (err,data) {
+//         if(err){
+//             next(err);
+//             //如果出错,就把error传进next,并且转到下一个路由中去
+//         }else{
+//             cb(true,data);
+//         }
+//     });
+// };
+
+
+exports.getNews = function(req, cb) {
+    // News.find()
+    //     .populate('author')
+    //     .exec(function(err, docs) {
+    //
+    //         var newsList=new Array();
+    //         for(var i=0;i<docs.length;i++) {
+    //             newsList.push(docs[i].toObject());
+    //         }
+    //         cb(true,newsList);
+    //     });
+    // 获取查询url中的page变量
+    var page = req.query.page || 1 ;  //req.query.page是封装属性,默认为0
+    //此函数中的this应该指window
+    this.pageQuery(page, 3, News, 'author', {}, {
+        created_time: 'desc' //以created_time为基准,降序排列
+    }, function(error, data){
+        if(error){
+            next(error);
+        }else{
+            // console.log(data.results)
+            cb(true,data);
         }
-        cb(true,newsList);
     });
+
 };
 
+
+
+exports.pageQuery = function (page, pageSize, Model, populate, queryParams, sortParams, callback) {
+    var start = (page - 1) * pageSize;
+    var $page = {
+        pageNumber: page
+    };
+    //并行执行多个函数，每个函数都是立即执行，不需要等待其它函数先执行。传给最终callback的数组中的数据按照tasks中声明的顺序，而不是执行完成的顺序。 如果某个函数出错，则立刻将err和已经执行完的函数的结果值传给parallel最终的callback。其它未执行完的函数的值不会传到最终数据，但要占个位置。 同时支持json形式的tasks，其最终callback的结果也为json形式。
+    async.parallel({
+        count: function (done) {  // 查询数量
+            Model.count(queryParams).exec(function (err, count) {
+                done(err, count);
+            });
+        },
+        records: function (done) {   // 查询一页的记录
+            Model.find(queryParams).skip(start).limit(pageSize).populate(populate).sort(sortParams).exec(function (err, doc) {
+                done(err, doc);
+            });
+        }
+    }, function (err, results) {
+        //count函数和records函数调用的结果,按照函数声明的顺序(如果全部调用),或者使用"."角标保存到results中(数组形式,所以可以调用length)
+        //输出当前列表,保存到newList数组中
+        var newsList=new Array();
+        for(var i=0;i<results.records.length;i++) {
+            newsList.push(results.records[i].toObject());
+        }
+
+        var count = results.count;
+        $page.pageCount = parseInt((count - 1) / pageSize + 1);
+        $page.results = newsList;
+        $page.count = count;
+        callback(err, $page);
+    });
+};
