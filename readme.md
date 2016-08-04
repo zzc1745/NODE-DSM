@@ -1,4 +1,23 @@
 # 学习日记
+## 2016年8月4日
+#### 权限限制模块
+需要工具：cookie-parser、express-session  
+思路：  
+1. 编写载入网页权限的中间件 authority.js，检查有无登陆记录即req.session.user中有无值，如果有值，进入博客主页；如果是字符串**'undefined'**，就重定向进入login界面  
+2. 在app.js中添加路由规则  
+登陆界面的路由不需要验证,所有人都可以查看  
+博客页面的路由，需要先检查权限(authority.isAuthenticated)，才能进入指定的路由文件寻找路由  
+3. 修改相关的跳转路径；在完成登陆后页面跳转前，将数据保存进req.session.user属性
+---
+## 2016年8月3日
+#### 发现好用插件
+[屏蔽广告插件  adblock plus](https://downloads.adblockplus.org/devbuilds/adblockpluschrome/)
+
+#### 使用session实现授权认证模块
+笔记待整理
+[session详解](http://www.cnblogs.com/chenchenluo/p/4197181.html)
+[路由与中间件再回顾](http://www.cnblogs.com/chenchenluo/p/4192282.html)
+---
 ## 2016年8月2日
 #### 埋一个坑 
 利用jquery pagination分页  
@@ -25,7 +44,7 @@
 3. 在命令行输入 gulp [task_name]即可启动更新
 
 #### gulpfile.js编写
-
+http://www.gulpjs.com.cn/docs/recipes/ 
 ----
 ## 2016年7月29日
 #### npm全局安装模块(mac端)
@@ -102,7 +121,8 @@ Ctrl+u: 上滚半屏。
        * "http://127.0.0.1:8080/Documents/channel_v3.json"* //无法获取该网址内容
     ]
 ```
-解决方法：自行下载channel_v3.json文件，并修改setting default中的channels路径
+解决方法：自行下载channel_v3.json文件，并修改setting default中的channels路径  
+
 ---
 
 ## 2016年7月28日

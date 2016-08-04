@@ -41,12 +41,14 @@ router.get('/blog', function (req,res,next) {
     });
 });
 
-
+// 渲染登陆界面
 router.get('/login', function(req,res,next) {
     res.render('login',{ title: 'Express', layout:'lg'});
 });
+// post方式获取数据完成验证
 router.post('/login', function(req, res, next) {
     dbHelper.findUsr(req.body, function (success, doc) {
+        req.session.user = doc.data;
         res.send(doc);
     })
 });

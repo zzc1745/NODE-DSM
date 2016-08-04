@@ -56,6 +56,7 @@
                     </a>
                 </li>
                 {{#times pageCount 1 pageCount}}
+                    <!--循环pageCount次,从1开始到pageCount-->
                     <li {{#equals pageNumber this.step}}class="active" {{/equals}}>
                             <a href="?page={{step}}{{#if recommend}}&recommend={{recommend}}{{/if}}{{#if type}}&type={{type}}{{/if}}">{{step}}</a>
                         <!--如果recommend和type值非空,才会在url中出现这一段新增字符串&recommend=  &type=  -->

@@ -133,16 +133,6 @@ exports.addNews = function(data, cb) {
 
 
 exports.getNews = function(req, cb) {
-    // News.find()
-    //     .populate('author')
-    //     .exec(function(err, docs) {
-    //
-    //         var newsList=new Array();
-    //         for(var i=0;i<docs.length;i++) {
-    //             newsList.push(docs[i].toObject());
-    //         }
-    //         cb(true,newsList);
-    //     });
     // 获取查询url中的page变量
     var page = req.query.page || 1 ;  //req.query.page是封装属性,默认为0
     //此函数中的this应该指window
@@ -186,9 +176,13 @@ exports.pageQuery = function (page, pageSize, Model, populate, queryParams, sort
             newsList.push(results.records[i].toObject());
         }
 
-        var count = results.count;
-        $page.pageCount = parseInt((count - 1) / pageSize + 1);
-        $page.results = newsList;
+        var count = results.count;   //保存新闻记录总条数
+        // 把属性保存进$page变量中,输出到外部
+        // $page.pageCount = parseInt((count - 1) / pageSize + 1);  //保存新闻总页数
+        // count-1的目的是避免出现最后一页记录为空
+        //除法结果加1的目的是在最后一页记录条数未填满时,仍然显示
+        $page.pageCount = parseInt((count ) / pageSize +1 );  //保存新闻总页数
+        $page.results = newsList;    //新闻记录对象数组
         $page.count = count;
         callback(err, $page);
     });

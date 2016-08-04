@@ -6,6 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var exphbs      = require('express-handlebars');
 var hbsHelper = require('./lib/hbsHelper');
+var session = require('express-session');
+var authority = require('./db/authority');
 
 var mongoose = require('mongoose');
 var config = require('./config');
@@ -45,8 +47,24 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/admin', admin);
+// app.use('/', routes);
+// app.use('/admin', admin);
+
+// 添加session支持
+app.use(session(
+    {
+      name: 'blog',
+      maxAge: 30*1000,
+      secret:'simple-blog-secret-key',
+      resave:false,
+      saveUninitialized:false
+    }
+));
+//session的路由控制
+app.use('/',require('./routes/login'));
+app.use('/yes',authority.isAuthenticated,require('./routes/index'));
+app.use('/admin',authority.isAuthenticated,require('./routes/admin'));
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

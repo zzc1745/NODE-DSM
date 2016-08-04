@@ -23,6 +23,7 @@ function doAddUser(){
                 alert("注册成功! ");
             }
             location.href="/login";
+            // location.href="/";
         }
     })
 };
