@@ -1,4 +1,16 @@
 # 学习日记
+## 2016年8月10日
+#### node与express读书笔记（二）
+chap 7 hbs模板引擎   
+模板作用：在同个文件中融合两种编程语言
+除语法外hbs的注意点：
+在 Handlebars 中,**所有的块都会改变上下文**  
+if单独使用，在 if 或 else 块中,上下文与上一级上下文是相同的。但是在each嵌套中
+## 2016年8月5日
+#### phantomjs模块安装问题
+在试用老师模板的时候，打开pfd转换功能，失败。  
+发现时phantomjs未安装的原因，用国内网安装失败多次，试用淘宝镜像也失败，改用vpn，下载成功，pdf导出功能实现。
+
 ## 2016年8月4日
 #### 权限限制模块
 需要工具：cookie-parser、express-session  
@@ -8,6 +20,28 @@
 登陆界面的路由不需要验证,所有人都可以查看  
 博客页面的路由，需要先检查权限(authority.isAuthenticated)，才能进入指定的路由文件寻找路由  
 3. 修改相关的跳转路径；在完成登陆后页面跳转前，将数据保存进req.session.user属性
+
+#### mongodb的开启与关闭
+默认接口27017  
+开启：mongod --dbpath /usr/local/Cellar/mongodb/3.2.7/data/db    
+关闭：  
+1. 登录数据库
+[mongo@redhatB data]$ mongo
+MongoDB shell version: 2.2.1
+connecting to: test    
+2. 关闭 MongoDB 服务
+ > use admin;
+switched to db admin
+> db.shutdownServer();   
+参考文献：[MongoDB：关闭服务](http://blog.sina.com.cn/s/blog_a51dfb960101jynj.html)  
+#### NPM设置淘宝镜像提高扩展安装速度
+### 单独使用方法 
+npm install -g xxxxxx --registry=https://registry.npm.taobao.org 
+### 设置全局配置 
+1. 打开.npmrc文件（在用户主目录下，没有的话可以建一个: touch ~/.npmrc） 
+2. 加入以下配置信息： 
+registry = http://registry.npm.taobao.org
+
 ---
 ## 2016年8月3日
 #### 发现好用插件
