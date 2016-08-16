@@ -1,11 +1,61 @@
 # 学习日记
+## 2016年8月16日 
+[bootstrap预定义样式](http://v3.bootcss.com/css)  
+#### Socket.IO
+Socket.IO是一个开源的WebSocket库，它通过Node.js实现WebSocket服务端，同时也提供客户端JS库。Socket.IO支持以事件为基础的实时双向通讯。  
+Socket.IO支持4种协议：WebSocket、htmlfile、xhr-polling、jsonp-polling，它会自动根据浏览器选择适合的通讯方式，从而让开发者可以聚焦到功能的实现而不是平台的兼容性。
+#### 定点插入图片：
+document.selection 表示当前网页中的选中内容。   
+方法有：  
+
+-   clear　清除选中的内容
+-   empty　取消选中
+- createRange　返回 TextRange 或 ControlRange 对象 
+- createRangeCollection 不支持   
+
+document.selection.createRange() 根据当前文字选择返回 TextRange 对象，或根据控件选择返回ControlRange 对象。  
+NaN = not a number   
+[jQuery Validate验证框架详解(表单输入规范)](http://www.cnblogs.com/linjiqin/p/3431835.html)
+
+
 ## 2016年8月10日
 #### node与express读书笔记（二）
-chap 7 hbs模板引擎   
-模板作用：在同个文件中融合两种编程语言
-除语法外hbs的注意点：
+**chap 7 hbs模板引擎**   
+模板作用：在同个文件中融合两种编程语言    
+##### 层级与上下文
 在 Handlebars 中,**所有的块都会改变上下文**  
-if单独使用，在 if 或 else 块中,上下文与上一级上下文是相同的。但是在each嵌套中
+if单独使用，在 if 或 else 块中,上下文与上一级上下文是相同的，使用../.访问上级上下文。但是在each嵌套中使用if，得使用 ../../.。  
+在{{#each currencies}}块中使用{{.}}。{{.}}指向 当前上下文。  
+##### 布局与视图
+布局：一种特殊的视图，用于模板的模板。  
+视图：通常表现为网站上的各个页面(它也可以表现为页面中 AJAX 局部加载的内容,或一封电子邮件,或页面上的任何东西)。默认情况下,Express 会在 views 子目录中查找视图。  
+渲染顺序：渲染视图 ——> 渲染布局  
+##### 局部(partial)与段落(section)
+使用局部文件(partial)，使有些组成部分(在前端界通常称为“组件”)需要在不同的页面重复使用
+{{> partial_name}}可以让你在视图中包含一个局部文件  
+使用段落(section)，使你的视图本身可以添加到布局的不同部分  
+
+**chap8 表单**  
+`<input>` 标签的 name 属性:属性用于对提交到服务器后的表单数据进行标识，或者在客户端通过 JavaScript 引用表单数据。  
+注释：只有设置了 name 属性的表单元素才能在提交表单时传递它们的值。  
+$(this).attr(key); 获取节点属性名的值，$(this).attr(key, value); 设置节点属性的值  
+closest() 方法返回被选元素的第一个祖先元素。
+
+提交表单————>处理表单————>url跳转————>跳转到重定向目标
+post———————>在同一url处理表单————>303重定向————>跳转
+get————————>独立路径url处理————>303重定向————>跳转
+`res.render(303,'/url');  /301也可重定向，但二次跳转回跳过验证过程`  
+重定向目标：  
+1. 某专用页面，工作量大
+2. 原来的url，需要用某隐藏域暂存url
+3. 预测新的url
+处理数据：建议用post方式，使用express处理，使用中间件body-parser解析url，激活req.body。  
+调动方式：req.body._name 即为name属性为_name的input标签的节点内容  
+上传文件：使用formidable中间件，form标签中必须指定 enctype="multipart/form-data" 来启用文件上传。  
+安装Formidable(npm install --save formidable)并创建一下路由处理程序  
+可拖拽,可以看到上传文件缩略图,并查 看进度条：使用jQuery File Upload(http://blueimp.github.io/ jQuery-File-Upload)。  
+要显示文件缩略图,jquery-file-upload-middleware使用ImageMagick，在OSX中,你可 以使用 brew install imagemagick 来安装。  
+
 ## 2016年8月5日
 #### phantomjs模块安装问题
 在试用老师模板的时候，打开pfd转换功能，失败。  
