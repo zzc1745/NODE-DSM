@@ -1,4 +1,20 @@
 # 学习日记
+## 2016年8月23日
+#### formdata对象
+`var form = new Formdata();`  
+提交（使用submit button）时，会把form中的所有表格元素的name与value组成一个queryString，提交到后台。  
+三种方案来获取或修改FormData:  
+1. 创建一个空的FormData对象，然后再用append方法逐个添加键值对：  
+`var formdata = new FormData();  
+formdata.append("name", "司徒正美");`  
+2. 取得form元素对象，将它作为参数传入FormData对象中  
+`var formobj =  document.getElementById("form");  
+var formdata = new FormData(formobj);`  
+3. 利用form元素对象的getFormData方法生成它  
+`var formobj =  document.getElementById("form");  
+var formdata = formobj.getFormData()`  
+
+
 ## 2016年8月16日 
 [bootstrap预定义样式](http://v3.bootcss.com/css)  
 #### Socket.IO
@@ -16,7 +32,12 @@ document.selection 表示当前网页中的选中内容。
 document.selection.createRange() 根据当前文字选择返回 TextRange 对象，或根据控件选择返回ControlRange 对象。  
 NaN = not a number   
 [jQuery Validate验证框架详解(表单输入规范)](http://www.cnblogs.com/linjiqin/p/3431835.html)
+validate的功能：  
+1. 验证用户填写的表单信息是否符合要求
+2. 把杂乱数据转换成标准格式
 
+ID选择器返回的jquery对象是一个数组。eg：var file = $("#uploadFile")[0].files[0];  
+jquery选择器返回的结果都是伪数组。另外只要一个对象有length跟splice这2个属性就是伪数组
 
 ## 2016年8月10日
 #### node与express读书笔记（二）
