@@ -1,7 +1,15 @@
 <div class="add-news">
-    <input type="text" class="form-control" id="news-title" placeholder="文章标题">
-    <textarea type="text" class="form-control" id="news-content" placeholder="文章内容"></textarea>
-    <button type="submit" class="form-control" id="publicNews">发布文章</button>
+    <input type="text" class="form-control" id="news-title" placeholder="文章标题" required>
+    <textarea type="text" class="form-control textarea" id="news-content" placeholder="文章内容" required></textarea>
+    <div class="func-button">
+        <input type="file" id="choose-pic" multiple="multiple" accept="image/*">
+        <!--把上传文件的控件设置为不可见,并且覆盖在选择图片按钮上方-->
+        <a class="btn btn-primary" >选择图片</a>
+        <a class="btn btn-primary disabled" id="upload-pic">上传</a>
+        <button type="submit" class="form-control btn-primary" id="publicNews">发布文章</button>
+    </div>
 </div>
 
+
+<script src="/blog/common.js"></script>
 <script src="/blog/addNews.js"></script>

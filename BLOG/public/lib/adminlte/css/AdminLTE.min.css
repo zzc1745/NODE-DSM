@@ -1472,7 +1472,7 @@ a:hover, a:active, a:focus {
 	position: relative
 }
 .box-header.with-border {
-	border-bottom: 1px solid #f4f4f4
+	border-bottom: 1px dashed #dbdbdb;
 }
 .collapsed-box .box-header.with-border {
 	border-bottom: none
@@ -1515,7 +1515,7 @@ a:hover, a:active, a:focus {
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 3px;
 	border-bottom-left-radius: 3px;
-	padding: 10px
+	padding: 10px;
 }
 .no-header .box-body {
 	border-top-right-radius: 3px;
@@ -1546,13 +1546,14 @@ a:hover, a:active, a:focus {
 	border-bottom-left-radius: 0
 }
 .box-footer {
+	position: relative;
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 3px;
 	border-bottom-left-radius: 3px;
 	border-top: 1px solid #f4f4f4;
 	padding: 10px;
-	background-color: #fff
+	background-color: #fff;
 }
 .chart-legend {
 	margin: 10px 0
@@ -4220,4 +4221,287 @@ table.text-center, table.text-center td, table.text-center th {
 		white-space: normal !important
 	}
 }
+
+
+/*-- add by liyang 2016/07/01 --*/
+
+.user-block .title {
+	margin-left: 10px;
+	display: block;
+	font: 24px/1.5 "microsoft yahei";
+	font-weight: 600;
+	float: left;
+}
+
+.user-block .postdate {
+	display: block;
+	float: right;
+	font: 12px/1.5 'microsoft yahei';
+	color: #aaa;
+}
+
+.user-block .postdate b {
+	margin-right: 20px;
+}
+
+.menu-block {
+    margin-top: 20px;
+}
+
+.menu-block a {
+    float: right;
+    display: block;
+    font-size: 10px;
+
+}
+
+.box-menu a {
+	float: right;
+	display: block;
+	font-size: 10px;
+	margin-left: 10px;
+}
+
+.box-menu {
+	padding:10px;
+	border-top: 1px dashed #dbdbdb;
+}
+
+.box-menu:after {
+	display:block;clear:both;content:"";visibility:hidden;height:0;
+}
+
+.box-limit {
+	max-height: 300px;
+	overflow: hidden;
+}
+
+.box-footer a {
+	margin-right: 10px;
+}
+
+.box-footer #uploadFile  {
+	opacity: 0;
+	width: 104px;
+	height: 34px;
+	float: left;
+	position: absolute;
+	top:10px;
+	left:10px;
+}
+
+
+.pg-wrapper {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0,0,0,0.5);
+	z-index: 999999990;
+	display: none;
+}
+
+.box-body img {
+	max-width: 900px;
+	border: 1px solid #eee;
+}
+
+.pg-wrapper>.pg-layer {
+	width: 400px;
+	*height: 24px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform:translate(-50%,-50%);
+}
+
+.pg-wrapper>.pg-layer>.pg-bar {
+	width: 100%;
+}
+
+.pg-wrapper>.pg-layer>.pg-info{
+	position: absolute;
+	top:2px;
+	left: 190px;
+	font: 12px/1.5 "微软雅黑";
+	color: #666;
+}
+
+
+.form-thumb {
+	height: 200px;
+}
+
+.form-thumb>img {
+	height: 100%;
+	background: #999;
+	min-width: 200px;
+}
+
+.box-mooc {
+	background: #eee;
+	box-sizing: border-box;
+	margin: 10px;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.4), 0 0 20px rgba(10,10,0,0.1) inset;
+}
+
+
+.box-mooc img {
+	width: 200px;
+	height: 120px;
+}
+
+.mooc-wrapper {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	padding: 10px;
+}
+
+.box-mooc > h1 {
+	font-size: 18px;
+	margin: 0;
+	padding: 10px 0 0 10px;
+}
+
+.box-mooc > h2 {
+	font-size: 12px;
+	color: #666;
+	margin: 0;
+	padding: 10px 0 10px 10px;
+}
+
+.content-edit {
+	display: flex;
+}
+
+.mooc-bar {
+	flex-basic:250px;
+	min-width: 250px;
+	padding: 0;
+	background: #eee;
+}
+
+.mooc-bar li {
+	list-style: none;
+	padding: 5px 5px 5px 15px;
+	position: relative;
+}
+
+.mooc-bar li:hover {
+	background: #7b9e31;
+	color: #fff;
+
+}
+
+.mooc-bar>li>i {
+	width: 20px;
+	height: 20px;
+	display: block;
+	position: absolute;
+	background: #000;
+	border-radius: 10px;
+	font: 12px/1.8 "helvetica";
+	font-style:normal;
+	text-align: center;
+	font-weight: 600;
+	color:#fff;
+}
+
+.mooc-bar span {
+	margin-left: 30px;
+}
+
+.mooc-bar>.mooc-week {
+	background: #ddd;
+	position: relative;
+}
+
+.mooc-main {
+	background: #fff;
+	flex:1 1 auto;
+	padding: 1px;
+	padding: 20px;
+}
+
+.mooc-main>textarea {
+	width: 100%;
+	height: 100%;
+	font-size: 14px;
+	line-height: 18px;
+	border: 1px solid #dddddd;
+	padding: 10px;
+}
+
+.mooc-active {
+	color: #dd4b39;
+}
+
+.mooc-button {
+    background: #333;
+    height: 20px;
+    width: 20px;
+    float: right;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    display: none;
+    margin-left:5px;
+}
+
+.mooc-button-s {
+    height: 20px;
+    width: 15px;
+}
+
+.mooc-button:hover {
+    color: #7b9e31;
+    background: #fff;
+}
+
+#chapTitle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 9999;
+}
+
+.btn-wrapper-r {
+	position: absolute;
+	right:5px;
+	top:5px;
+	z-index: 90;
+}
+
+.btn-wrapper-l {
+	position: absolute;
+	left:0;
+	top:5px;
+	z-index: 90;
+}
+
+
+.loader-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    color: #ff6600;
+    display: none;
+}
+
+.loader-wrapper>.loader {
+	width: 50px;
+	height: 50px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform:translate(-50%,-50%);
+}
+
 

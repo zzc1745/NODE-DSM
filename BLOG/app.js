@@ -47,8 +47,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use('/', routes);
-// app.use('/admin', admin);
+
 
 // 添加session支持
 app.use(session(
@@ -60,10 +59,13 @@ app.use(session(
       saveUninitialized:false
     }
 ));
-//session的路由控制
-app.use('/',require('./routes/login'));
-app.use('/yes',authority.isAuthenticated,require('./routes/index'));
-app.use('/admin',authority.isAuthenticated,require('./routes/admin'));
+// //session的路由控制
+// app.use('/',require('./routes/login'));
+// app.use('/yes',authority.isAuthenticated,require('./routes/index'));
+// app.use('/admin',authority.isAuthenticated,require('./routes/admin'));
+
+app.use('/', routes);
+app.use('/admin', admin);
 
 
 // catch 404 and forward to error handler

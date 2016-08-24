@@ -120,13 +120,26 @@
 	height: 200px;
 	margin-top: 20px;
 }
+.func-button {
+    position: relative;
+	width: 100%;
+	margin-top: 20px;
+}
+#choose-pic {
+    opacity:0;
+	width: 104px;
+	height: 34px;
+	float: left;
+	position: absolute;
+	top:9px;
+	left:10px;
+}
 #publicNews {
 	width: 100px;
 	float: right;
-	margin-top: 20px;
 	text-align: center;
-	background-color: #367fa9;
-	color: white;
+	/*background-color: #367fa9;*/
+	/*color: white;*/
 }
 .user-info {
 	margin-top: 1px;

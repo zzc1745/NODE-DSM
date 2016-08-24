@@ -1,4 +1,118 @@
 # 学习日记
+## 2016年8月24日
+####  jquery的扩展 
+声明：通过`$.fn.extend`扩展Jquery函数(在这个项目中表现为common.js文件中的函数扩展，利用脚本引用调用)  
+调用：`$.format();`   
+#### Node.js的Formidable模块的使用
+```
+1)     创建Formidable.IncomingForm对象
+
+　　　var form = new formidable.IncomingForm()
+
+2)     form.encoding = 'utf-8' 设置表单域的编码
+
+3)     form.uploadDir = "/my/dir"; 设置上传文件存放的文件夹，默认为系统的临时文件夹，可以使用fs.rename()来改变上传文件的存放位置和文件名
+
+4)     form.keepExtensions = false; 设置该属性为true可以使得上传的文件保持原来的文件的扩展名。
+
+5)     form.type 只读，根据请求的类型，取值'multipart' or 'urlencoded'
+
+6)     form.maxFieldsSize = 2 * 1024 * 1024; 限制所有存储表单字段域的大小（除去file字段），如果超出，则会触发error事件，默认为2M
+
+7)     form.maxFields = 1000 设置可以转换多少查询字符串，默认为1000
+
+8)     form.hash = false; 设置上传文件的检验码，可以有两个取值'sha1' or 'md5'.
+
+9)     form.multiples = false; 开启该功能，当调用form.parse()方法时，回调函数的files参数将会是一个file数组，数组每一个成员是一个File对象，此功能需要 html5中multiple特性支持。
+
+10)   form.bytesReceived 返回服务器已经接收到当前表单数据多少字节
+
+11)   form.bytesExpected 返回将要接收到当前表单所有数据的大小
+
+12)   form.parse(request, [callback]) 该方法会转换请求中所包含的表单数据，callback会包含所有字段域和文件信息，如：
+
+　　  form.parse(req, function(err, fields, files) {
+
+ 　　　　 // ...   
+
+　　  });
+
+13)    form.onPart(part); 你可以重载处理multipart流的方法，这样做的话会禁止field和file事件的发生，你将不得不自己处理这些事情，如：
+
+　　   form.onPart = function(part) {
+
+  　　 　　part.addListener('data', function() {
+
+    　　           // ...
+
+  　　　　 });
+
+　　　}
+
+　　  如果你只想让formdable处理一部分事情，你可以这样做:
+
+　　  form.onPart = function(part) {
+
+  　　　　if (!part.filename) {
+
+    　　　　   // 让formidable处理所有非文件部分
+
+   　　    　　form.handlePart(part);
+
+　　 　　 }
+
+　　 }
+
+14)   formidable.File对象
+
+　　A.      file.size = 0 上传文件的大小，如果文件正在上传，表示已上传部分的大小
+
+　　B.      file.path = null 上传文件的路径。如果不想让formidable产生一个临时文件夹，可以在fileBegain事件中修改路径
+
+　　C.      file.name = null 上传文件的名字
+
+　　D.     file.type = null 上传文件的mime类型
+
+　　E.      file.lastModifiedDate = null 时间对象，上传文件最近一次被修改的时间
+
+　　F.      file.hash = null 返回文件的hash值
+
+　　G.     可以使用JSON.stringify(file.toJSON())来格式化输出文件的信息
+
+15)   form.on('progress', function(bytesReceived, bytesExpected) {}); 当有数据块被处理之后会触发该事件，对于创建进度条非常有用。
+
+16)   form.on('field', function(name, value) {}); 每当一个字段/值对已经收到时会触发该事件
+
+17)   form.on('fileBegin', function(name, file) {});  在post流中检测到任意一个新的文件便会触发该事件
+
+18)   form.on('file', function(name, file) {}); 每当有一对字段/文件已经接收到，便会触发该事件
+
+19)   form.on('error', function(err) {}); 当上传流中出现错误便会触发该事件，当出现错误时，若想要继续触发request的data事件，则必须手动调用request.resume()方法
+
+20)   form.on('aborted', function() {}); 当用户中止请求时会触发该事件，socket中的timeout和close事件也会触发该事件，当该事件触发之后，error事件也会触发
+
+21） form.on('end', function() {}); 当所有的请求已经接收到，并且所有的文件都已上传到服务器中，该事件会触发。此时可以发送请求到客户端。
+```
+#### 图片上传的后台处理
+老师给的范文，一次只能上传一张图片，如果重复添加，只能出现最先添加的一张  
+优化：
+[node.js实现多图片上传](http://www.jb51.net/article/50595.htm)
+
+#### md文字的转换
+方法一：  
+使用Remarkable，为了能够支持代码高亮，我们还用到了另外一个中间件highlight  
+`var md = webHelper.Remarkable();  
+ data.content = md.render(data.content);`  
+方法二：  
+使用markdown插件  
+`var markdown = require('markdown').markdown;  
+data.content = markdown.toHTML(data.content);`  
+
+[有趣的中间件](http://www.jianshu.com/p/2a533f47a6d7)
+
+
+
+
 ## 2016年8月23日
 #### formdata对象
 `var form = new Formdata();`  

@@ -6,7 +6,8 @@ var News = require('./schema/news');
 
 var webHelper = require('../lib/webHelper');
 var async = require('async');
-// var md = webHelper.Remarkable();
+var md = webHelper.Remarkable();
+// var markdown = require('markdown').markdown;
 
 //用户登录的查找函数
 exports.findUsr = function(data, cb) {
@@ -76,6 +77,10 @@ exports.addUser = function(data, cb){
 
 //添加新闻函数
 exports.addNews = function(data, cb) {
+    //方法一: 如果适用markdown中间件
+    // data.content = markdown.toHTML(data.content);  //对content内容进行html的转换
+    //方法二: 如果适用remarkable+highlight
+    data.content = md.render(data.content);
     // data.content = md.render(data.content);  //用在remarkable里面
     var news = new News({
         title: data.title,
@@ -136,7 +141,7 @@ exports.getNews = function(req, cb) {
     // 获取查询url中的page变量
     var page = req.query.page || 1 ;  //req.query.page是封装属性,默认为0
     //此函数中的this应该指window
-    this.pageQuery(page, 3, News, 'author', {}, {
+    this.pageQuery(page, 5, News, 'author', {}, {
         created_time: 'desc' //以created_time为基准,降序排列
     }, function(error, data){
         if(error){
@@ -181,7 +186,7 @@ exports.pageQuery = function (page, pageSize, Model, populate, queryParams, sort
         // $page.pageCount = parseInt((count - 1) / pageSize + 1);  //保存新闻总页数
         // count-1的目的是避免出现最后一页记录为空
         //除法结果加1的目的是在最后一页记录条数未填满时,仍然显示
-        $page.pageCount = parseInt((count ) / pageSize +1 );  //保存新闻总页数
+        $page.pageCount = parseInt((count -1 ) / pageSize +1 );  //保存新闻总页数
         $page.results = newsList;    //新闻记录对象数组
         $page.count = count;
         callback(err, $page);

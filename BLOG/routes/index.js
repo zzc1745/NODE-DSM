@@ -67,4 +67,16 @@ router.get('/user', function(req,res,next) {
     });
 });
 
+//查看浏览器发送到服务器的信息
+router.get('/headers',function (req,res) {
+    res.set('Content-Type','text/plain');
+    var s = '';
+    for( var name in req.headers)
+        s += name + ':' + req.headers[name] + '\n';
+    res.send(s);
+})
+
+
+
+
 module.exports = router;
