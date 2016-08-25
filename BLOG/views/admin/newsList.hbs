@@ -1,0 +1,57 @@
+<div class="newsList">
+    <div class="create-box">
+        <a href="/admin/addNews" class="btn btn-primary btn-md">新建文章</a>
+    </div>
+    <div class="list-content">
+        <table id="news-table">
+            <tr>
+                <th>标题</th>
+                <th>作者</th>
+                <th>创建时间</th>
+                <th>功能</th>
+            </tr>
+            {{#each entries}}
+                <tr>
+                    <td>
+                        <a href="#">{{title}}</a>
+                    </td>
+                    <td>{{author.username}}</td>
+                    <!--不能理解这个引用author.username author来自于dbhelper.js中addnews函数-->
+                    <td>{{formatDate meta.createAt}}</td>
+                    <td>
+                        <!--data-toggle触发bootstrap的增强插件comfirm-->
+                        <!--此处调用了common.js中的点击"data-toggle"="confirm"函数-->
+                        <a href="/admin/delete/{{_id}}" class="btn btn-danger btn-sm" data-toggle="confirm" data-message="确认要删除此文章吗?">删除文章</a>
+                    </td>
+                </tr>
+            {{/each}}
+            </table>
+        </table>
+        <div class="page-box center-father">
+            <nav>
+                <ul class="pagination center">
+                    <li>
+                        <a href="{{#le pageNumber 1}}?page={{reduce pageNumber 1}}{{/le}}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {{#times pageCount 1 pageCount}}
+                        <!--循环pageCount次,从1开始到pageCount-->
+                        <li {{#equals pageNumber this.step}}class="active" {{/equals}}>
+                            <a href="?page={{step}}{{#if recommend}}&recommend={{recommend}}{{/if}}{{#if type}}&type={{type}}{{/if}}">{{step}}</a>
+                            <!--如果recommend和type值非空,才会在url中出现这一段新增字符串&recommend=  &type=  -->
+                        </li>
+                    {{/times}}
+                    <li>
+                        <a href="{{#ge pageNumber pageCount}}?page={{reduce pageNumber 1}}{{/ge}}" aria-label="after">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+<script src="/blog/common.js"></script>

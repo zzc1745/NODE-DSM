@@ -96,6 +96,25 @@ exports.addNews = function(data, cb) {
     })
 };
 
+exports.deleteNews = function (id, cb) {
+    News.findById(id, function (err, doc ) {
+        if(doc){   //如果找到了记录就删除doc.remove,同时修改entries的信息
+            doc.remove(function (err, doc) {
+                if (err) {   //删除失败
+                    entries.msg = err;
+                    cb(false, entries);
+                }else {     //成功删除
+                    entries.msg = '删除新闻成功!';
+                    cb(true, entries);
+                }
+            });
+        }else {
+            next(err);
+        }
+    })
+};
+
+
 
 //展示新闻函数   非分页展示
 // exports.getNews = function (req,cb) {

@@ -51,7 +51,7 @@ function doPublic() {
     $.ajax({
         //将表单用post的方法发布
         type: "POST",
-        url: "/admin/news",
+        url: "/admin/addNews",
         contentType: "application/json",
         dataType: "json",
         //data是发送到服务器的数据

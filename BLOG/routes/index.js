@@ -32,7 +32,7 @@ router.get('/blog', function (req,res,next) {
         //把docs传回blog.hbs页面
         //回调函数中的docs要和res.render的传出参数docs一致
         // res.render('blog', { entries: docs , layout: 'main'});
-        res.render('blog',{
+        res.render('blogs',{
             entries:docs.results,
             pageCount:docs.pageCount,
             pageNumber:docs.pageNumber,

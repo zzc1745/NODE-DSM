@@ -1,5 +1,39 @@
 # 学习日记
+## 2016年8月25日
+#### git-push失败
+出现的错误：
+```
+error: RPC failed; curl 56 SSLRead() return error -36
+fatal: The remote end hung up unexpectedly
+fatal: The remote end hung up unexpectedly
+```
+错误原因：  
+It seems like the commit size was too big (default is < 1Mbyte). Resolved it with rising the limit up to 500Mbytes:即上传的文件过大,需要提高上传文件阈值  
+`git config --global http.postBuffer 524288000`  
+
+#### jQuery属性选择器
+$("[href]") 选取所有带有 href 属性的元素。  
+$("[href='#']") 选取所有带有 href 值等于 "#" 的元素。  
+$("[href!='#']") 选取所有带有 href 值不等于 "#" 的元素。  
+$("[href$='.jpg']") 选取所有 href 值以 ".jpg" 结尾的元素。  
+
+[bootstrap的js插件文档](http://v3.bootcss.com/javascript/#modals)  
+[sco.js bootstrap中javascript组件的增强版](http://www.bootcss.com/p/sco.js/)  
+
+#### 文章删除模块
+1. 思路分析：hbs写出静态页面————>删除按钮绑定提示框执行选项(yes/no)对应函数————>触发删除数据库记录的函数
+2. 实践步骤一：写静态页面，与新闻展示页面类似，提取数据并（{{#each entries}}）循环  
+3. 实践步骤二：删除按钮绑定  
+用属性选择器，绑定不同选项的触发函数，在这个项目中，通过跳转到可以触发DeleteNews()函数的页面实现。  
+
+#### 文章图片路径错误
+对于upload文件夹的路径引用错误，在app.js中缺少以下：  
+`app.use(express.static(path.join(__dirname, '/')));`
+
 ## 2016年8月24日
+#### 上传文件模块思路
+先添加上传文件的控件，把文件保存到指定文件夹，把文件的url以md文件的语法保存到前台并插入到textarea。  
+使用middleware完成md语法转换，(remarkable+highligh.js)/markdown
 ####  jquery的扩展 
 声明：通过`$.fn.extend`扩展Jquery函数(在这个项目中表现为common.js文件中的函数扩展，利用脚本引用调用)  
 调用：`$.format();`   

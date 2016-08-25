@@ -5,10 +5,10 @@ var formidable = require('formidable');
 var entries = require('../db/jsonRes');
 
 /* GET users listing. */
-router.get('/news',function(req,res,next){
-  res.render('./admin/news',{ title:'Express', layout:'admin'});
+router.get('/addNews',function(req,res,next){
+  res.render('./admin/addNews',{ title:'Express', layout:'admin'});
 });
-router.post('/news',function(req,res,next){
+router.post('/addNews',function(req,res,next){
   dbHelper.addNews(req.body, function (success, doc){
     res.send(doc);
   })
@@ -49,6 +49,32 @@ router.post('/uploadImg', function (req, res, next) {
           // {"code":0,"data":"\\upload/upload_ae493682ed5e1a2481108a3248595c3f.png","msg":""}
       });
   
+});
+
+router.get('/newsList', function (req, res, next) {
+
+    var msg = req.session['message'] || '';
+    req.session['message'] = "";
+    
+    dbHelper.getNews(req, function (success,docs) {
+        res.render('./admin/newsList', {
+            layout: 'admin',
+            entries: docs.results,
+            pageCount:docs.pageCount,
+            pageNumber:docs.pageNumber,
+            count:docs.count,
+            message: msg
+        });
+    });
+});
+
+router.get('/delete/:id', function (req, res, next) {
+    var id = req.params.id;   //不理解这里的id是怎么获取到的  解答:是从路由中得到的
+    dbHelper.deleteNews(id, function (success, data) {
+        req.session['message'] = data.msg;   //用来弹出"删除成功"的提示
+        //Cannot set property 'message' of undefined
+        res.redirect("/admin/newsList");  //在该路由下完成删除函数后跳转回到原来页面
+    });
 });
 
 router.get('/reg',function(req,res,next){
