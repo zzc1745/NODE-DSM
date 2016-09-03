@@ -70,6 +70,15 @@
 	margin-top: 25px;
 	padding: 5px 10px;
 }
+.each-blog {
+	float: left;
+	position: relative;
+	width: 100%;
+	background-color: #F3F1F4;
+	margin-top: 25px;
+	padding: 5px 10px;
+	margin-bottom: 20px;
+}
 .blog-title {
     border-bottom: 2px solid #50353A;
     color: #6F5E57;
@@ -102,6 +111,19 @@
     padding: 10px 0;
     height: 50px;
     overflow: hidden;
+}
+.each-blog-text {
+	font-size: 15px;
+	color: #50353A;
+	padding: 10px 0;
+	height:auto;
+}
+.each-blog-text img {
+	width: 50%;
+	height: 50%;
+}
+.btn-pdf {
+	float: right;
 }
 .add-news {
 	float: right;

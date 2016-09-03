@@ -2,6 +2,10 @@ var express = require('express');
 var router = express.Router();
 var dbHelper = require('../db/dbHelper');
 
+var fs = require('fs');
+var NodePDF = require('nodePDF');
+
+
 var mongoose = require('mongoose');
 var db = mongoose.createConnection('localhost','test');
 db.on('error',console.error.bind(console,'连接错误:'));
@@ -40,6 +44,48 @@ router.get('/blog', function (req,res,next) {
         });
     });
 });
+
+//read more页面
+router.get('/blogPDF/:id', function (req, res, next) {
+    var id = req.params.id;
+    
+    dbHelper.getOneNews(req, id, function (success, data) {
+        res.render('blog', {
+            layout:'admin',
+            entry: data
+        });
+    });
+});
+
+router.get('PDF2/:id', function (req, res, next) {
+    var id = req.params.id;
+    var host = req.protocol + '://' + req.get('host')
+    
+})
+
+router.get('PDF/:id', function (req, res, next) {
+
+    var id = req.params.id;
+    var host = req.protocol + '://' + req.get('host') + '/pdf/blogPdf/' + id;
+    var pdffile = '\\pdf\\news-' + Date.now() + '.pdf';
+
+    // res.render('./admin/newsCreate', { title: 'Express', layout: 'admin' });
+
+    NodePDF.render(host, pdffile, function(err, filePath){
+        if (err) {
+            console.log(err);
+        }else{
+            // console.log(filePath);
+            fs.readFile(pdffile , function (err,data){   //此行代码有问题
+                res.contentType("application/pdf");
+                res.send(data);
+            });
+        }
+    });
+})
+
+
+
 
 // 渲染登陆界面
 router.get('/login', function(req,res,next) {

@@ -1,53 +1,22 @@
-<div class="blog-container container-fluid">
-    <div class="header row">
-        <a href="/blog"><span class="header-title">FOODPORN</span></a>
-        <ul class="user-bar col-md-3">
-            <li class="col-md-2">
-                <i class="fa fa-envelope"></i>
-            </li>
-            <li class="col-md-10 user-welcome">
-                <a href="#">欢迎foodporn</a>
-            </li>
-            <div class="user-info">
-                <div class="user-image">
-                    <img src="/images/22.jpg">
-                    <p>foodporn</p>
+
+    <div class="blogs-and-pages">
+            <div class="each-blog">
+                <div class="blog-title">
+                    <a href="#"><h4>{{entry.title}}</h4></a>
+                    <span class="blog-date">创建于{{formatDate entry.meta.createAt}}</span>
+                    <span class="blog-update">更新于{{formatDate entry.meta.updateAt}}</span>
                 </div>
-                <div class="user-buttons">
-                    <a href="/admin/newsList" class="btn btn-default btn-flat" id="profile">admin</a>
-                    <a href="" class="btn btn-default btn-flat" id="sign-out">sign out</a>
+                <div class="each-blog-text">
+                    <!--//content需要转码,否则出现<p>content</p>,所以需要三个大括号-->
+                    <p>{{{entry.content}}}</p>
                     <div class="clear-both"></div>
                 </div>
-            </div>
-        </ul>
-    </div>
-    <div class="navi">
-        <ul class="navi-bar">
-            <li>C语言</li>
-            <li>C++</li>
-            <li>HTML</li>
-            <li>文学</li>
-            <li>语言</li>
-        </ul>
-    </div>
-    <div class="blogs-and-pages">
-        {{#each entries}}
-            <!--each表示对同一集合中的所有元素做同一异步操作-->
-            <div class="blog-content">
-                <div class="blog-title">
-                    <a><h4>{{title}}</h4></a>
-                    <span class="blog-date">创建于{{formatDate meta.createAt}}</span>
-                    <span class="blog-update">更新于{{formatDate meta.updateAt}}</span>
-                </div>
-                <div class="blog-text">
-                    <!--//content需要转码,否则出现<p>content</p>,所以需要三个大括号-->
-                    <p>{{{content}}}</p>
+                <div class="btn btn-primary btn-pdf" >
+                    <a href="/PDF/{{entry._id}}">导出PDF</a>
                 </div>
             </div>
-        {{/each}}
         <div class="clear-both"></div>
     </div>
     <div class="clear-both"></div>
-</div>
 
 <script src="/blog/profile.js"></script>

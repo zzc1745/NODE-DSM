@@ -211,3 +211,12 @@ exports.pageQuery = function (page, pageSize, Model, populate, queryParams, sort
         callback(err, $page);
     });
 };
+
+//单条博客的readmore
+exports.getOneNews = function (req, id ,cb) {
+    News.findOne({_id: id})  
+        .exec(function (err,docs) {
+            var docs = (docs != null)?docs.toObject():'';
+            cb(true, docs);
+        });
+};

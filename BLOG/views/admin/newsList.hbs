@@ -13,10 +13,11 @@
             {{#each entries}}
                 <tr>
                     <td>
-                        <a href="#">{{title}}</a>
+                        <a href="/blogPDF/{{_id}}">{{title}}</a>
                     </td>
                     <td>{{author.username}}</td>
-                    <!--不能理解这个引用author.username author来自于dbhelper.js中addnews函数-->
+                    <!--不能理解这个引用author.username  author来自于dbhelper.js中addnews函数-->
+                    <!--当前上下文,即为此条新闻的单个entry,引用其中的author属性,而author属性又引用自user的schema,就是说author是user的一个实例-->
                     <td>{{formatDate meta.createAt}}</td>
                     <td>
                         <!--data-toggle触发bootstrap的增强插件comfirm-->

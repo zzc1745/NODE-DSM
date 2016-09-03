@@ -27,7 +27,7 @@ app.set('view engine', 'hbs');
 var hbs = exphbs.create({
   partialsDir: 'views/partials',
   layoutsDir: "views/layouts/",
-  defaultLayout: 'main',
+  defaultLayout: 'admin',
   extname: '.hbs',
   helpers: hbsHelper
 });

@@ -1,4 +1,22 @@
 # 学习日记
+## 2016年9月1日
+#### 
+
+
+
+## 2016年8月26日
+#### 把博客转换成pdf
+步骤一：写出静态页面(readmore页面，添加导出pdf页面)  
+步骤二：使用phantomjs插件（需要翻墙）  
+
+
+#### 路由匹配
+'/:id':传入各种各样数据类型的id值  
+'/:id?':传入各种各样数据类型的id值，也可以设置为空  
+'/:id/:operation?':传入一种操作，也可以设置为空  
+[路由例子，以及与之相匹配的关联路径](http://www.cnblogs.com/coding4/p/5580498.html)  
+
+
 ## 2016年8月25日
 #### git-push失败
 出现的错误：
@@ -27,8 +45,10 @@ $("[href$='.jpg']") 选取所有 href 值以 ".jpg" 结尾的元素。
 用属性选择器，绑定不同选项的触发函数，在这个项目中，通过跳转到可以触发DeleteNews()函数的页面实现。  
 
 #### 文章图片路径错误
+`app.use(express.static(__dirname + '/public'))`是将所有请求，先交给`express.static(__dirname + '/public')`来处理一下，通过多次使用 express.static 中间件来添加多个静态资源目录,Express将会按照你设置静态资源目录的顺序来查找静态资源文件。  
 对于upload文件夹的路径引用错误，在app.js中缺少以下：  
-`app.use(express.static(path.join(__dirname, '/')));`
+`app.use(express.static(path.join(__dirname, '/')));`   //静态文件目录设置为项目根目录+/     
+
 
 ## 2016年8月24日
 #### 上传文件模块思路

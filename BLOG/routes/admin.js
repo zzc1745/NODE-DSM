@@ -70,6 +70,8 @@ router.get('/newsList', function (req, res, next) {
 
 router.get('/delete/:id', function (req, res, next) {
     var id = req.params.id;   //不理解这里的id是怎么获取到的  解答:是从路由中得到的
+    // 那么路由中的:id怎么得到的? 
+    // 路由中的id,来自于每一条新闻在获取为entries时,对应的id,在newsList.hbs文件中获取
     dbHelper.deleteNews(id, function (success, data) {
         req.session['message'] = data.msg;   //用来弹出"删除成功"的提示
         //Cannot set property 'message' of undefined
