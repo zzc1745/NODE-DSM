@@ -9,6 +9,10 @@ var Config = {
         name: 'blog',
         host: 'localhost',
         url: 'mongodb://127.0.0.1:27017/test'
+    },
+    site: {
+        path:'',
+        pagesize: 6
     }
 };
 module.exports = Config;

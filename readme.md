@@ -1,6 +1,63 @@
 # 学习日记
-## 2016年9月1日
-#### 
+## 2016年9月6日
+#### gulp的使用  
+方法，在edit config————>default————>gulp.js导出管理文件  
+
+#### 消除webstorm的错误warn
+1. Open up settings (Ctrl + Alt + S on Linux)
+2. Navigate to Languages & Frameworks -> Javascript -> Libraries
+3. Click Download and choose jQuery
+
+#### pdf导出问题
+只能导出整个页面，不能单独导出博客
+
+## 2016年9月4日
+#### npm安装新的package失败
+出现的错误：  
+```
+addlocal could not install //[路径名称]  
+Darwin 15.6.0
+npm ERR! argv "/usr/local/bin/node" "/usr/local/bin/npm" "install" "formidable" "--save-dev"
+npm ERR! node v4.4.6
+npm ERR! npm  v2.15.5
+npm ERR! code EPEERINVALID
+
+npm ERR! peerinvalid The package eslint@1.10.3 does not satisfy its siblings' peerDependencies requirements!
+
+npm ERR! Please include the following file with any support request:
+npm ERR!     /Users/trick/Documents/web/BLOG/npm-debug.log
+```
+可能的错误原因：  
+1. node_modules空间不足  
+2. 添加了某一个库，导致其余不同的库对于该库的依赖版本不同  
+
+
+尝试解决方法：  
+1. npm cache clear   解决了addlocal的错误  
+
+2. 手动卸载了再重装了npm  
+经过实践，发现重装npm步骤失败，重新更新了brew并重装了nodejs，使自动下载npm包管理器
+>
+1、sudo npm uninstall npm -g  
+如果步骤1卸不掉npm了（我就是这种情况）  
+2、进到npm的安装目录 /usr/local/lib/node_modules/npm/  
+sudo make uninstall  
+3、手动重装npm  
+curl -L https://npmjs.com/install.sh | sh   
+
+**最终结果：npm版本太老，升级后即可**
+
+
+#### nodejs中npm常用命令
+npm install <name>安装nodejs的依赖包
+npm install <name> -g  将包安装到全局环境中
+npm install <name> --save  安装的同时，将信息写入package.json中
+npm remove <name>移除
+npm update <name>更新
+npm ls 列出当前安装的了所有包
+npm root 查看当前包的安装路径
+npm root -g  查看全局的包的安装路径
+npm help  帮助，如果要单独查看install命令的帮助，可以使用的npm help install
 
 
 

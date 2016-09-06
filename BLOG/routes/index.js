@@ -3,7 +3,9 @@ var router = express.Router();
 var dbHelper = require('../db/dbHelper');
 
 var fs = require('fs');
-var NodePDF = require('nodePDF');
+var NodePDF = require('nodepdf');
+// var wkhtmltopdf = require('wkhtmltopdf');
+var config = require('../config');
 
 
 var mongoose = require('mongoose');
@@ -51,38 +53,51 @@ router.get('/blogPDF/:id', function (req, res, next) {
     
     dbHelper.getOneNews(req, id, function (success, data) {
         res.render('blog', {
-            layout:'admin',
-            entry: data
+            entry: data,
         });
     });
 });
 
-router.get('PDF2/:id', function (req, res, next) {
+//导出PDF
+var wkhtmltopdf = require('wkhtmltopdf');
+router.get('/PDF2/:id',function (req, res, next) {
+    var host = req.protocol + '://' + req.get('host') + '/blogPDF/' + id;
+    // wkhtmltopdf('https://www.baidu.com/')
+    //     .pipe(fs.createWriteStream('out.pdf'));
+    wkhtmltopdf(host).pipe(res);
+});
+
+
+router.get('/PDF/:id', function (req, res, next) {
+
     var id = req.params.id;
-    var host = req.protocol + '://' + req.get('host')
-    
-})
+    var host = req.protocol + '://' + req.get('host') + '/blogPDF/' + id;   //待导出的html页面的路径
+    // console.log(host);
+    // req.protocol  === http
+    // ://
+    // req.get('host')  === localhost:3000
+    // /blogPDF/
+    // id === 577a5c09e26fab5c041b1279
+    var pdffile = config.site.path + '\\pdf\\news-' + Date.now() + '.pdf';          //过度文件的保存文件名
 
-router.get('PDF/:id', function (req, res, next) {
-
-    var id = req.params.id;
-    var host = req.protocol + '://' + req.get('host') + '/pdf/blogPdf/' + id;
-    var pdffile = '\\pdf\\news-' + Date.now() + '.pdf';
-
-    // res.render('./admin/newsCreate', { title: 'Express', layout: 'admin' });
-
+    //渲染导出pdf的预览页面
+    // NodePDF.render('http://www.google.com', 'google.pdf', options, function(err,...));
     NodePDF.render(host, pdffile, function(err, filePath){
+    // NodePDF.render('http://www.baidu.com', pdffile, function(err, filePath){
         if (err) {
             console.log(err);
         }else{
-            // console.log(filePath);
-            fs.readFile(pdffile , function (err,data){   //此行代码有问题
+            console.log(filePath);
+            fs.readFile( pdffile , function (err,data){
+                // 读取需要导出的内容以pdf的格式保存到pdffile
                 res.contentType("application/pdf");
                 res.send(data);
             });
         }
     });
-})
+});
+
+
 
 
 
