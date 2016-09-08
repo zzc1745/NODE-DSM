@@ -10,7 +10,11 @@ router.post('/',function (req,res,next) {
     dbHelper.findUsr(req.body, function (success,doc) {
         req.session.user = doc.data;
         res.send(doc);
-    })
+    });
+    // dbHelper.addVisitor(req.body, function (success , doc) {
+    //     res.send(doc);
+    // })
 });
+
 
 module.exports = router;

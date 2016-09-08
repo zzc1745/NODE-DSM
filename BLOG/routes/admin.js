@@ -66,10 +66,15 @@ router.get('/newsList', function (req, res, next) {
             message: msg
         });
     });
+
+    // dbHelper.getCount(req,function (success, data) {
+    //     res.send(data);
+    // });
+
 });
 
 router.get('/delete/:id', function (req, res, next) {
-    var id = req.params.id;   //不理解这里的id是怎么获取到的  解答:是从路由中得到的
+    var id = req.params.id;   //不理解这里的id是怎么获取到的  解答:是从路由中得到的,解析req中的参数
     // 那么路由中的:id怎么得到的? 
     // 路由中的id,来自于每一条新闻在获取为entries时,对应的id,在newsList.hbs文件中获取
     dbHelper.deleteNews(id, function (success, data) {

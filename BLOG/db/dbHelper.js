@@ -3,6 +3,8 @@ var mongoose = require('./db.js');
 //获取user和news的两个模型
 var User = require('./schema/user');
 var News = require('./schema/news');
+var Visitor = require('./schema/visitor');
+var db = mongoose.createConnection('localhost','test');
 
 var webHelper = require('../lib/webHelper');
 var async = require('async');
@@ -115,7 +117,6 @@ exports.deleteNews = function (id, cb) {
 };
 
 
-
 //展示新闻函数   非分页展示
 // exports.getNews = function (req,cb) {
 //     //在News的模型里面找到所有数据,并且对找到的所有结果,执行同一个操作函数
@@ -220,3 +221,61 @@ exports.getOneNews = function (req, id ,cb) {
             cb(true, docs);
         });
 };
+
+
+
+
+//访问登记模块
+
+//保存游客访问记录
+exports.addVisitor = function (data, cb) {
+    var visitor = new Visitor({
+        visitorName : data.visitorName,
+        visitorID: data.visitorID,
+    });
+    visitor.save(function(err, doc){
+        if (err){
+            cb(false,err);
+        }else {
+            cb(true,entries);   
+        }
+    });
+}
+
+
+//游客记录计数
+//
+// exports.countVisitor = function (req, cb) {
+//     var count = function(done){
+//         Visitor.count().exec(function(err, countV){
+//             done(err,countV);
+//         });
+//     }
+//     cb(true,count);
+// };
+// exports.getCount2 = function (req ,cb) {
+//     var count = Visitor.count().exec();
+//     console.log('count is' + count);
+//     // alert('一共'+ count +' 人');
+//     cb(true, count);
+// }
+
+exports.getCount = function (req ,cb ) {
+
+    var $visitor = {
+        // pageNumber: page
+    };
+    async.parallel({
+        count: function (done) {  // 查询数量
+            Visitor.count().exec(function (err, count) {
+                done(err, count);
+            });
+        },
+    }, function (err, results) {
+        //count函数和records函数调用的结果,按照函数声明的顺序(如果全部调用),或者使用"."角标保存到results中(数组形式,所以可以调用length)
+        //输出当前列表,保存到newList数组中
+        var count = results.count;   //保存新闻记录总条数
+        $visitor.count = parseInt(count/2);
+        cb(err, $visitor);
+    });
+}
