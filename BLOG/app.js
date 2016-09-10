@@ -51,6 +51,8 @@ app.use(express.static(path.join(__dirname, '/')));
 
 config.site.path = path.join(__dirname, 'public');
 
+
+
 // 添加session支持
 app.use(session(
     {

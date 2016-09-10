@@ -13,6 +13,9 @@ var Config = {
     site: {
         path:'',
         pagesize: 6
+    },
+    news: {
+        path:''
     }
 };
 module.exports = Config;

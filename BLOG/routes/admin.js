@@ -66,11 +66,6 @@ router.get('/newsList', function (req, res, next) {
             message: msg
         });
     });
-
-    // dbHelper.getCount(req,function (success, data) {
-    //     res.send(data);
-    // });
-
 });
 
 router.get('/delete/:id', function (req, res, next) {

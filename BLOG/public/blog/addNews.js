@@ -59,7 +59,7 @@ function doPublic() {
             'title': $("#news-title").val(),
             'content': $("#news-content").val(),
             //id的出处和news.js中定义的不同?
-            'id': $.cookie('id')   //把id存入cookie里
+            'id': $.cookie('id')   //把id从cookie里取出
             // 'title' : $('#amazing1').val(),
         }),
         success: function(result) {

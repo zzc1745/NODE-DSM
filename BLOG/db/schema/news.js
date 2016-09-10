@@ -12,6 +12,8 @@ var newsSchema = new Schema({
     },
     author: {
         type: Schema.Types.ObjectId,
+        //Schema.Type是由Mongoose内定的一些数据类型
+        
         ref: 'User'
     }
 });

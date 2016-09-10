@@ -4,7 +4,10 @@ var mongoose = require('./db.js');
 var User = require('./schema/user');
 var News = require('./schema/news');
 var Visitor = require('./schema/visitor');
+var Review = require('./schema/review');
 var db = mongoose.createConnection('localhost','test');
+var config = require('../config');
+
 
 var webHelper = require('../lib/webHelper');
 var async = require('async');
@@ -196,7 +199,7 @@ exports.pageQuery = function (page, pageSize, Model, populate, queryParams, sort
     }, function (err, results) {
         //count函数和records函数调用的结果,按照函数声明的顺序(如果全部调用),或者使用"."角标保存到results中(数组形式,所以可以调用length)
         //输出当前列表,保存到newList数组中
-        var newsList=new Array();
+        var newsList= new Array();
         for(var i=0;i<results.records.length;i++) {
             newsList.push(results.records[i].toObject());
         }
@@ -218,8 +221,10 @@ exports.getOneNews = function (req, id ,cb) {
     News.findOne({_id: id})  
         .exec(function (err,docs) {
             var docs = (docs != null)?docs.toObject():'';
+            // $.cookie('blogId',docs_id, {expires: 30});
             cb(true, docs);
         });
+    // $.cookie('blogId', id, {expires:30});
 };
 
 
@@ -260,6 +265,7 @@ exports.addVisitor = function (data, cb) {
 //     cb(true, count);
 // }
 
+//获取访客总数
 exports.getCount = function (req ,cb ) {
 
     var $visitor = {
@@ -277,5 +283,38 @@ exports.getCount = function (req ,cb ) {
         var count = results.count;   //保存新闻记录总条数
         $visitor.count = parseInt(count/2);
         cb(err, $visitor);
+    });
+}
+
+
+//添加评论
+exports.addReview = function(data , blogId , cb) {
+    console.log(blogId);
+    var review = new Review({
+        author : data.author,
+        content: data.content,
+        blogId : blogId,
+        // blogId : 不能获得从function传入参数中的blog-id值   不理解,准确的说应该是传入的blog-id值不是我要的格式
+    });
+    review.save(function(err,doc){
+        if (err) {
+            cb(false,err);
+        }else{
+            cb(true,entries);
+        }
+    })
+};
+
+//查找新闻对应的评论 
+exports.findReviews = function (req, cb) {
+    var blogid = config.news.path;
+    Review.find({"blogId": blogid})
+        .sort({"createAt" : -1})
+        .exec(function (err,docs) {
+            var reviewList = new Array();
+            for(var i=0; i<docs.length; ++i ){
+                reviewList.push(docs[i].toObject());
+        }
+        cb(true,reviewList);
     });
 }

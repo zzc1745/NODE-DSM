@@ -50,13 +50,30 @@ router.get('/blog', function (req,res,next) {
 //read more页面
 router.get('/blogPDF/:id', function (req, res, next) {
     var id = req.params.id;
-    
-    dbHelper.getOneNews(req, id, function (success, data) {
-        res.render('blog', {
-            entry: data,
-        });
+    config.news.path = id;
+    dbHelper.getOneNews(req , id, function (success, data) {
+        dbHelper.findReviews(req , function (success, result) {
+            res.render('blog',{
+                entry: data,
+                review: result,
+            });
+        })
     });
+    //显示该新闻的所属评论
+
 });
+
+router.post('/blogPDF/:id', function (req, res, next) {
+    // console.log(req.params.id);
+    // var blogid = req.params.id;
+    // var blogId = blogid.stringify();   //此处获取到的值是":id"字符串
+    // var blogId = "577a5d3be61fbe64043a8d70";
+    var blogId = config.news.path;
+    dbHelper.addReview(req.body, blogId ,function (success, result) {
+        res.send(result);
+    });
+})
+
 
 //导出PDF  方法一:适用wkhtmltopdf
 router.get('/PDF2/:id',function (req, res, next) {

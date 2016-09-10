@@ -202,9 +202,46 @@
 #sign-out {
 	float: right;
 }
-
-
-
+#reviewer {
+}
+#review {
+	margin-top: 10px;
+	height:auto;
+}
+#publicReview {
+	margin-top: 10px;
+	float: right;
+}
+.reviews {
+	float: left;
+	width: 100%;
+	margin-bottom: 20px;
+}
+.each-review {
+	margin-top: -2px;
+	background-color: #d1d9e1;
+	border: dashed 2px white;
+	border-collapse: collapse;
+}
+.each-review p {
+	padding-left: 10px;
+}
+.review-name {
+	border-bottom: dashed 1px #9b869b;
+	color: #6f5e57;
+}
+.review-date {
+	color: #7ea2b4;
+	font-size: small;
+}
+.comment-box {
+	float: right;
+	position: relative;
+	width: 75%;
+	background-color: #6f5e57;
+	margin-top: 25px;
+	padding: 20px 10px;
+}
 
 
 
