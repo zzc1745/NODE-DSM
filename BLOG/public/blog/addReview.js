@@ -7,7 +7,7 @@ function init() {
 function doAddReview(){
     $.ajax({
         type : "POST",
-        url : "/blogPDF/:id",
+        url : "/yes/blogPDF/:id",
         contentType:"application/json",
         data:JSON.stringify({
             'author' : $("#reviewer").val(),

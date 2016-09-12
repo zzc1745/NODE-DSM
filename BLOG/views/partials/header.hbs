@@ -1,24 +1,26 @@
 <div class="header row">
-    <a href="/blog"><span class="header-title">FOODPORN</span></a>
+    <!--<a href="/blog"><span class="header-title">FOODPORN</span></a>-->
+    <a href="/yes/blog"><span class="header-title">FOODPORN</span></a>
     <ul class="user-bar col-md-3">
         <li class="col-md-2">
             <i class="fa fa-envelope"></i>
         </li>
         <li class="col-md-10 user-welcome">
-            <a href="#">欢迎foodporn</a>
+            <a href="#">欢迎<span class="user-info-name" id="html"></span></a>
         </li>
         <div class="user-info">
             <div class="user-image">
                 <img src="/images/22.jpg">
-                <p>foodporn</p>
+                <p class="user-info-name"></p>
             </div>
             <div class="user-buttons">
                 <a href="/admin/newsList" class="btn btn-default btn-flat" id="profile">admin</a>
-                <a href="" class="btn btn-default btn-flat" id="sign-out">sign out</a>
+                <a href="/logout" class="btn btn-default btn-flat" id="sign-out">sign out</a>
                 <div class="clear-both"></div>
             </div>
         </div>
     </ul>
 </div>
 
-<script src="/blog/profile.js"></script>
+
+<script src="../../public/blog/blog-init.js"></script>

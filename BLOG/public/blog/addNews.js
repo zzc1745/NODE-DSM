@@ -68,7 +68,7 @@ function doPublic() {
            }else{
                alert("发布成功");
            }
-            location.href="/blog";
+            location.href="/yes/blog";
         }
     })
 }

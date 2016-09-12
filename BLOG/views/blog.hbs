@@ -12,27 +12,15 @@
                     <div class="clear-both"></div>
                 </div>
                 <div class="btn btn-primary btn-pdf" >
-                    <a href="/PDF/{{entry._id}}">导出PDF</a>
+                    <a href="/yes/PDF/{{entry._id}}">导出PDF</a>
                 </div>
             </div>
             <div class="reviews">
         {{#each review}}
                 <div class="each-review">
-                    <p class="review-name">{{author}} <span class="review-date">{{formatDate createAt}}</span></p>
+                    <p class="review-title"><span class="review-name">{{author}}</span>&nbsp;&nbsp;<span class="review-date"> {{formatDate createAt}}</span></p>
                     <p>{{content}}</p>
                 </div>
-                <!--<div class="each-review">-->
-                    <!--<p class="review-name">name <span class="review-date">2016年7月12日</span></p>-->
-                    <!--<p>这篇文章真不错哈哈哈</p>-->
-                <!--</div>-->
-                <!--<div class="each-review">-->
-                    <!--<p class="review-name">name <span class="review-date">2016年7月12日</span></p>-->
-                    <!--<p>这篇文章真不错哈哈哈</p>-->
-                <!--</div>-->
-                <!--<div class="each-review">-->
-                    <!--<p class="review-name">name <span class="review-date">2016年7月12日</span></p>-->
-                    <!--<p>这篇文章真不错哈哈哈</p>-->
-                <!--</div>-->
         {{/each}}
             </div>
         <div class="clear-both"></div>
@@ -44,5 +32,4 @@
     </div>
     <div class="clear-both"></div>
 
-<script src="/blog/profile.js"></script>
 <script src="/blog/addReview.js"></script>

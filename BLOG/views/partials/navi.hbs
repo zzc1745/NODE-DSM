@@ -1,8 +1,14 @@
 <div class="navi">
+    <!--<div class="search">-->
+    <form class="search" action="/yes/search" method="get">
+        <input class="form-control " type="text" id="search-keyword" name="keyword" placeholder="查询文章...">
+        <button type="submit" id="searchButton" class="form-control btn-primary btn-md" >查询</button>
+    </form>
+    <div class="clear-both"></div>
     <ul class="navi-bar">
-        <li><a href="/blog">新闻</a></li>
+        <li><a href="/yes/blog">新闻</a></li>
         <li>慕课</li>
-        <li><a href="/count" id="visit-analyse">统计</a></li>
+        <li><a href="/yes/count" id="visit-analyse">统计</a></li>
         <li>其他</li>
         <li>更多</li>
     </ul>

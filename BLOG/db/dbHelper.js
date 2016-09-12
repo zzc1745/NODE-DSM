@@ -228,6 +228,23 @@ exports.getOneNews = function (req, id ,cb) {
 };
 
 
+//文章查询功能
+exports.searchNews = function(req, pattern, cb) {
+    // 获取查询url中的page变量
+    var page = req.query.page || 1 ;  //req.query.page是封装属性,默认为0
+    //此函数中的this应该指window
+    this.pageQuery(page, 5, News, 'author', {title: pattern}, {
+        created_time: 'desc' //以created_time为基准,降序排列
+    }, function(error, data){
+        if(error){
+            next(error);
+        }else{
+            cb(true,data);
+        }
+    });
+
+};
+
 
 
 //访问登记模块

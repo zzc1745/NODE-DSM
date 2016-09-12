@@ -47,6 +47,22 @@ router.get('/blog', function (req,res,next) {
     });
 });
 
+
+//文章查询页面 
+router.get('/search', function (req, res, next) {
+    var keyword = req.query.keyword;
+    var pattern = new RegExp(keyword, "i");
+    dbHelper.searchNews( req, pattern, function (success , docs) {
+            res.render('blogs', {
+                entries: docs.results,
+                pageCount: docs.pageCount,
+                pageNumber: docs.pageNumber,
+                count: docs.count
+            });
+    })
+});
+
+
 //read more页面
 router.get('/blogPDF/:id', function (req, res, next) {
     var id = req.params.id;
@@ -87,7 +103,7 @@ router.get('/PDF2/:id',function (req, res, next) {
 //导出pdf  套用老师的nodepdf
 router.get('/PDF/:id', function (req, res, next) {
     var id = req.params.id;
-    var host = req.protocol + '://' + req.get('host') + '/blogPDF/' + id;   //待导出的html页面的路径
+    var host = req.protocol + '://' + req.get('host') + '/yes/blogPDF/' + id;   //待导出的html页面的路径
     // console.log(host);
     // req.protocol  === http
     // ://
@@ -101,8 +117,8 @@ router.get('/PDF/:id', function (req, res, next) {
     
     //渲染导出pdf的预览页面
     // NodePDF.render('http://www.google.com', 'google.pdf', options, function(err,...));
-    // NodePDF.render(host, pdffile, function(err, filePath){
-    NodePDF.render('http://www.baidu.com', pdffile, function(err, filePath){
+    NodePDF.render(host, pdffile, function(err, filePath){
+    // NodePDF.render('http://www.baidu.com', pdffile, function(err, filePath){
         if (err) {
             console.log(err);
         }else{
@@ -136,6 +152,11 @@ router.post('/login', function(req, res, next) {
         res.send(docs);
     });
 });
+
+router.get('/logout',function (req, res, next) {
+    req.session.user = null;
+    res.redirect('/login');
+})
 
 router.get('/count', function (req, res, next) {
     dbHelper.getCount(req, function (success, doc) {

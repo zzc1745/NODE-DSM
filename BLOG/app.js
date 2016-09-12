@@ -64,12 +64,12 @@ app.use(session(
     }
 ));
 // //session的路由控制
-// app.use('/',require('./routes/login'));
-// app.use('/yes',authority.isAuthenticated,require('./routes/index'));
-// app.use('/admin',authority.isAuthenticated,require('./routes/admin'));
+app.use('/',require('./routes/login'));
+app.use('/yes',authority.isAuthenticated,require('./routes/index'));
+app.use('/admin',authority.isAuthenticated,require('./routes/admin'));
 
-app.use('/', routes);
-app.use('/admin', admin);
+// app.use('/', routes);
+// app.use('/admin', admin);
 
 
 // catch 404 and forward to error handler
