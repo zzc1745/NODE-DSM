@@ -1,0 +1,18 @@
+
+<div class="blogs-and-pages">
+    <div class="each-blog">
+        <div class="blog-title">
+            <a href="#"><h4>{{entry.title}}</h4></a>
+            <span class="blog-date">创建于{{formatDate entry.meta.createAt}}</span>
+            <span class="blog-update">更新于{{formatDate entry.meta.updateAt}}</span>
+        </div>
+        <div class="each-blog-text">
+            <!--//content需要转码,否则出现<p>content</p>,所以需要三个大括号-->
+            <p>{{{entry.content}}}</p>
+            <div class="clear-both"></div>
+        </div>
+    </div>
+
+    <div class="clear-both"></div>
+</div>
+<div class="clear-both"></div>

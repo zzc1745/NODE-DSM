@@ -103,7 +103,7 @@ router.get('/PDF2/:id',function (req, res, next) {
 //导出pdf  套用老师的nodepdf
 router.get('/PDF/:id', function (req, res, next) {
     var id = req.params.id;
-    var host = req.protocol + '://' + req.get('host') + '/yes/blogPDF/' + id;   //待导出的html页面的路径
+    var host = req.protocol + '://' + req.get('host') + '/blogPDF/' + id;   //待导出的html页面的路径
     // console.log(host);
     // req.protocol  === http
     // ://
