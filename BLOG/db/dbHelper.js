@@ -257,9 +257,12 @@ exports.addVisitor = function (data, cb) {
     });
     visitor.save(function(err, doc){
         if (err){
+            entries.code = 99;
             cb(false,err);
         }else {
-            cb(true,entries);   
+            entries.data = visitor;
+            entries.code = 0;
+            cb(true, entries);
         }
     });
 }

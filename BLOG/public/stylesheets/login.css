@@ -5,7 +5,7 @@
 .sheets {
 	width: 370px;
 	height: 200px;
-	background-color: white;
+	background-color: transparent;
 	margin: 200px auto;
 	padding-top: 10px;
 	padding-bottom: 30px;
@@ -32,4 +32,13 @@
 	height: 35px;
 	background-color: #367fa9;
 	color: white;
+}
+.login-bg {
+	height: 100%;
+	width: 100%;
+	padding-left: 0;
+	padding-right: 0;
+	background-image: url(../images/1.jpg);
+	/*background-size: 100%;*/
+	/*background-repeat: no-repeat;*/
 }

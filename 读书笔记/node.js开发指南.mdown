@@ -1,0 +1,201 @@
+#因为这本书是第三本整理的，因此与另两本笔记有很多重复之处，省去相同部分，这里摘录这本书的关键。
+
+
+## 基础概念
+#### app.js文件  
+1. ```app.configure(function(){});```
+   通过回调函数，设置app对应的Express模块的参数
+2. ```app.set();```   设置参数  
+   ```app.use();```   启用中间件  
+
+#### 路由文件
+```js
+exports.index=function(req,res){
+    res.render('index',{title:'Express'});
+    //定义一个函数，调用'index.hbs’模板解析引擎，产生页面返回浏览器
+    //{title:'Express'}是传入的参数
+};
+```
+####Express处理路由规则
+1. 同一个路径(如'/login')可以绑定多个路由响应函数，但是按照顺序优先匹配第一个。
+2. next()的用处，转移控制权，就是用于服务上述情况，从当前匹配的函数，跳转至下一个匹配路径的规则。
+3. next()，也可以起到类似中间件的效果，提取相似请求的相同部分，结合页面模板和要显示的数据结合生成HTML。  
+   eg.验证用户名存在与否；存在则展出，不存在则输出error。验证部分就可以插入next()
+
+
+## chap 4 node.js核心模块
+
+###全局对象
+Node.js 中的全局对象是 global,所有全局变量(除了 global 本身以外)都是 global 对象的属性。  
+global 最根本的作用是作为全局变量的宿主。  
+#### process属性
+process 是一个全局变量,  global 对象的属性。用于描述当前Node.js进程状态的对象，提供了一个与操作系统的简单接口。  
+process.argv是命令行参数数组。  
+process.stdout是标准输出流。  
+process.stdin是标准输入流。  
+process.nextTick(callback)为时间循环设置一项任务，在下次事件循环调用响应时调用callback。  
+
+#### console属性
+console用于提供控制台标准输出。
+console.log(): 标准输出流打印字符并以换行符结 
+console.error(): 标准错误流输出
+console.trace(): 标准错误流输出当前的调用栈。
+
+### util工具
+```js
+//继承
+util.inherits(Sub, Base);        Sub类继承了Base的方法，但不继承Base的属性
+
+//对象转变成字符串
+util.inspect(object,[showHidden],[depth],[colors])`
+是一个将任意对象转换为字符串的方法,通常用于调试和错误输出。
+```
+
+###事件驱动
+events 模块只提供了一个对象: events.EventEmitter。  
+EventEmitter 的核心就是事件发射与事件监听器功能的封装。  
+```js
+var events = require('events');
+var emitter = new events.EventEmitter();
+emitter.on('someEvent', function(arg1, arg2) { console.log('listener1', arg1, arg2);
+});
+
+```
+常用方法：  
+emitter.on(event, listener) 注册一个事件。  
+emitter.once(event, listener) 注册一个一次性的事件，触发后就被抹掉。  
+emitter.removeListener(event, listener) 在时间队列中剔除某一个事件  
+emitter.removeAllListeners([event]) 删除整个事件队列，或多个事件  
+emitter.listeners(event) 返回某些事件 emitter.emit(event, [arg1], [arg2], […]) 触发事件，可传入具体参数  
+
+
+### 文件系统 fs
+Node.js 文件系统封装在 fs 模块中，它提供了文件的读取、写入、更名、删除、遍历目录、链接等POSIX 文件系统操作。  
+
+fs.readFile
+```
+fs.readFile(filename,[encoding],[callback(err,data)])
+filename（必选），表示要读取的文件名。
+encoding（可选），表示文件的字符编码。
+callback 是回调函数，用于接收文件的内容。
+```
+
+
+fs.open
+```
+fs.open(path, flags, [mode], [callback(err, fd)])是POSIX open 函数的 封装，与C 语言标准库中的 fopen 函数类似。它接受两个必选参数，path 为文件的路径， flags 可以是以下值。
+r ：以读取模式打开文件。
+r+ ：以读写模式打开文件。
+w ：以写入模式打开文件，如果文件不存在则创建。
+w+ ：以读写模式打开文件，如果文件不存在则创建。
+a ：以追加模式打开文件，如果文件不存在则创建。
+a+ ：以读取追加模式打开文件，如果文件不存在则创建
+```
+
+
+fs.readFileSync
+```
+fs.readFileSync(filename, [encoding])是 fs.readFile 同步的版本。它接受 的参数和 fs.readFile 相同，而读取到的文件内容会以函数返回值的形式返回。如果有错 误发生，fs 将会抛出异常，你需要使用 try 和 catch 捕捉并处理异常。
+```
+
+
+fs.read
+```
+fs.read语法格式如下：
+fs.read(fd, buffer, offset, length, position, [callback(err, bytesRead, buffer)])
+参数说明：
+fd: 读取数据并写入 buffer 指向的缓冲区对象。
+offset: 是buffer 的写入偏移量。
+length: 是要从文件中读取的字节数。
+position: 是文件读取的起始位置，如果 position 的值为 null，则会从当前文件指针的位置读取。
+callback:回调函数传递bytesRead 和 buffer，分别表示读取的字节数和缓冲区对象。
+
+```
+
+### http服务器与客户端
+http.Server 是 http 模块中的 HTTP 服务器对象，用 Node.js 做的所有基于 HTTP 协议的系统  
+http.Server继承自 EventEmitter，提供了以下几个事件 。  
+1. request：当客户端请求到来时，该事件被触发，提供两个参数 req 和res，分别是 http.ServerRequest 和 http.ServerResponse 的实例，表示请求和响应信息.  
+2. connection：当 TCP 连接建立时，该事件被触发，提供一个参数 socket，为 net.Socket 的实例。connection 事件的粒度要大于 request，因为客户端在 Keep-Alive 模式下可能会在同一个连接内发送多次请求.   
+3. close ：当服务器关闭时，该事件被触发。注意不是在用户连接断开时  
+
+
+## chap5 web实际应用，微博为例
+1. Mongodb是一个对象数据库，没有表、行的概念，也没有固定的模式和结构，所有数据以`文档`的形式存储。
+2. Cookie，用来存储在客户端的信息，每次连接是，由浏览器向服务器提交，服务器也向浏览器发起存储Cookie的请求。由此实现，用户浏览多个页面，每个页面可以保持联系，不会断档。
+3. 函数与数据调用的简单介绍
+```
+req.body  : post请求信息解析过后的而对象。域值。  
+req.flash : 用于保存只出现在用户当前和下一次请求中的变量。随后被清除，便于实现页面通知和错误信息。  
+res.redirect : 重新定向，浏览器可以跳转至其他页面  
+User.get  : 通过用户名获取已知用户  
+User.save : 将对用户对象的修改存入数据库  
+req.session.user : 向会话对象写入当前用户的信息  
+```
+
+
+#### 登入与登出
+登入与登出，本质上是req.session.user变量标记的变动。signout的实现，就是使用res.redirect('/')重定向跳转到其他页面，并且设置user=null;  
+  页面设置访问权限：原理是在每个页面的路由响应函数内，检查是否登录；为简化代码，利用路由中间件，在每个路由前加路由中间件, 可实现页面控制。
+```js
+app.get('/reg', checkNotLogin);   
+app.get('/reg', function(req, res) {});  
+app.post('/reg', checkNotLogin);  
+app.post('/reg', function(req, res){});
+app.get('/logout', checkLogin); 
+app.get('/logout', function(req, res) {});
+app.get('/login', checkNotLogin); 
+app.get('/login', function(req, res) {});
+app.post('/login', checkNotLogin);
+app.post('/login', function(req, res) {});
+function checkLogin(req, res, next) { 
+  if (!req.session.user) {
+      req.flash('error', '未登入'); 
+      return res.redirect('/login'); }
+      next(); }
+function checkNotLogin(req, res, next) {
+      if (req.session.user) {
+        req.flash('error', '已登入');
+        return res.redirect('/');
+      }
+next(); }
+```
+#### 为登录用户与未登入用户显示不同信息：  
+```
+if(success)
+<div>正常页面</div>
+if(error)
+<div>错误页面</div>
+```
+- js异步调用原理  
+  https://segmentfault.com/a/1190000002545312
+
+
+
+
+## chap6 cluster模块
+功能是生成与生成与当前进程相同的子进程,并且允许父进程和子进程之间共享端口。  
+属性与函数：
+```
+cluster.setttings:配置集群参数对象
+cluster.isMaster:判断是不是master节点
+cluster.isWorker:判断是不是worker节点
+Event: 'fork': 监听创建worker进程事件
+Event: 'online': 监听worker创建成功事件
+Event: 'listening': 监听worker向master状态事件
+Event: 'disconnect': 监听worker断线事件
+Event: 'exit': 监听worker退出事件
+Event: 'setup': 监听setupMaster事件
+cluster.setupMaster([settings]): 设置集群参数
+cluster.fork([env]): 创建worker进程
+cluster.disconnect([callback]): 关闭worket进程
+cluster.worker: 获得当前的worker对象
+cluster.workers: 获得集群中所有存活的worker对象
+```
+
+
+
+
+
+
+  

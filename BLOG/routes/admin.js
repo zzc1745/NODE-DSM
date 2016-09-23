@@ -38,14 +38,14 @@ router.post('/uploadImg', function (req, res, next) {
           // 此处犯过一个错误:在callback参数中,把file误写成value,导致file.path为错误内容,因此导致不能在textarea区域内插入引用图片的代码
   })
       .on('end',function () {
-          console.log("upload done!");
+          // console.log("upload done!");
           entries.code = 0;
           entries.data = path;
           res.writeHead(200,{
               'content-type': 'text/json'
           });
           res.end(JSON.stringify(entries));
-          console.log(JSON.stringify(entries));
+          // console.log(JSON.stringify(entries));
           // {"code":0,"data":"\\upload/upload_ae493682ed5e1a2481108a3248595c3f.png","msg":""}
       });
   
@@ -63,15 +63,14 @@ router.get('/newsList', function (req, res, next) {
             pageCount:docs.pageCount,
             pageNumber:docs.pageNumber,
             count:docs.count,
-            message: msg
+            message: msg,
         });
     });
 });
 
 router.get('/delete/:id', function (req, res, next) {
-    var id = req.params.id;   //不理解这里的id是怎么获取到的  解答:是从路由中得到的,解析req中的参数
-    // 那么路由中的:id怎么得到的? 
-    // 路由中的id,来自于每一条新闻在获取为entries时,对应的id,在newsList.hbs文件中获取
+    var id = req.params.id;   //不理解这里的id是怎么获取到的      解答:是从路由中得到的,解析req中的参数
+    // 那么路由中的:id怎么得到的?       解答:路由中的id,来自于每一条新闻在获取为entries时,对应的id,在newsList.hbs文件中获取
     dbHelper.deleteNews(id, function (success, data) {
         req.session['message'] = data.msg;   //用来弹出"删除成功"的提示
         //Cannot set property 'message' of undefined
@@ -79,13 +78,5 @@ router.get('/delete/:id', function (req, res, next) {
     });
 });
 
-router.get('/reg',function(req,res,next){
-  res.render('./reg',{title: 'Express', layout :'reg'});
-});
-router.post('/reg',function (req,res,next){
-  dbHelper.addUser(req.body, function (success, doc) {
-    res.send(doc);
-  })
-});
 
 module.exports = router;

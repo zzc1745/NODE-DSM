@@ -1,11 +1,12 @@
 .container-fluid {
 	background-color: #D3D3D3;
 	height: 700px;
+	background-image: url(../images/1.jpg);
 }
 .sheets {
 	width: 600px;
 	height: 450px;
-	background-color: white;
+	background-color: rgba(255,255,255,0.5);
 	margin: 150px auto;
 	padding-top: 10px;
 	padding-bottom: 30px;

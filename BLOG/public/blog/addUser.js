@@ -7,7 +7,7 @@ function init() {
 function doAddUser(){
     $.ajax({
         type : "POST",
-        url : "/admin/reg",
+        url : "/reg",
         contentType:"application/json",
         data:JSON.stringify({
             'usr' : $("#reg-username").val(),
@@ -22,8 +22,8 @@ function doAddUser(){
             }else{
                 alert("注册成功! ");
             }
-            location.href="/login";
-            // location.href="/";
+            // location.href="/login";
+            location.href="/";
         }
     })
 };

@@ -317,7 +317,7 @@ ID选择器返回的jquery对象是一个数组。eg：var file = $("#uploadFile
 jquery选择器返回的结果都是伪数组。另外只要一个对象有length跟splice这2个属性就是伪数组
 
 ## 2016年8月10日
-#### node与express读书笔记（二）
+#### node与express读书（二）
 **chap 7 hbs模板引擎**   
 模板作用：在同个文件中融合两种编程语言    
 ##### 层级与上下文

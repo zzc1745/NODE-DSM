@@ -6,7 +6,7 @@ var fs = require('fs');
 var NodePDF = require('nodepdf');
 var wkhtmltopdf = require('wkhtmltopdf');
 var config = require('../config');
-
+var Visitor = require('../db/schema/visitor');
 
 var mongoose = require('mongoose');
 var db = mongoose.createConnection('localhost','test');
@@ -72,6 +72,7 @@ router.get('/blogPDF/:id', function (req, res, next) {
             res.render('blog',{
                 entry: data,
                 review: result,
+                layout: 'admin'
             });
         })
     });
@@ -91,15 +92,6 @@ router.post('/blogPDF/:id', function (req, res, next) {
 })
 
 
-//导出PDF  方法一:适用wkhtmltopdf
-router.get('/PDF2/:id',function (req, res, next) {
-    var id = req.params.id;
-    var host = req.protocol + '://' + req.get('host') + '/blogPDF/' + id;
-
-    wkhtmltopdf(host).pipe(fs.createWriteStream('out.pdf'));
-    // wkhtmltopdf(host).pipe(res);
-});
-
 //导出pdf  套用老师的nodepdf
 router.get('/PDF/:id', function (req, res, next) {
     var id = req.params.id;
@@ -111,14 +103,12 @@ router.get('/PDF/:id', function (req, res, next) {
     // /blogPDF/
     // id === 577a5c09e26fab5c041b1279
     var pdffile = config.site.path + '/pdf/news-' + Date.now() + '.pdf';          //过渡文件的包含绝对路径的保存文件名
-    
-    // 可能是路径的问题???????
-    //这个问题没有解决,导出pdf的某个div而非全部
+
     
     //渲染导出pdf的预览页面
     // NodePDF.render('http://www.google.com', 'google.pdf', options, function(err,...));
-    NodePDF.render(host, pdffile, function(err, filePath){
     // NodePDF.render('http://www.baidu.com', pdffile, function(err, filePath){
+    NodePDF.render(host, pdffile, function(err, filePath){
         if (err) {
             console.log(err);
         }else{
@@ -146,7 +136,7 @@ router.get('/login', function(req,res,next) {
 router.post('/login', function(req, res, next) {
     dbHelper.findUsr(req.body, function (success, doc) {
         req.session.user = doc.data;
-        // res.send(doc);
+        res.send(doc);
     });
     dbHelper.addVisitor(req.body, function (success , docs) {
         res.send(docs);
@@ -166,15 +156,6 @@ router.get('/count', function (req, res, next) {
         });
     });
 });
-
-router.get('/count2',function (req,res,next){
-    var count = db.getCollection('visitors').count();
-    console.log('count is' + count);
-    alert('一共'+ count +' 人');
-    res.send(count);
-});
-
-// router.get()
 
 
 //新建一个页面,暂时用来更新数据入库

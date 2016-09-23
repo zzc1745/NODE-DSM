@@ -21,6 +21,7 @@ function doLogin() {
         success: function(result) {
             if (result.code == 99) {
                 //如果是99 说明错误 返回错误原因
+                console.log(result.code);
                 $(".login-box-msg").text(result.msg);
             } else {
                 //把数据存进cookie,目的是用于之后的用户进入界面调用该登录用户数据
@@ -29,7 +30,7 @@ function doLogin() {
                 $.cookie('password', result.data.password, {expires:30});
                 $.cookie('id', result.data._id, {expires:30});
                 // location.href = "/blog";
-                location.href = "/yes/blog";
+                // location.href = "/yes/blog";
             }
         }
     })
