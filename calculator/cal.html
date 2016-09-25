@@ -1,0 +1,80 @@
+<!doctype>
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<title>网页计算器</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="cal.css">
+	<script type="text/javascript" src="cal.js"></script>
+
+<!-- 
+必须支持标准的四则运算。例如：1+2*3=7。
+支持容错功能。比如输入： 6+++-2=4
+支持等号的循环计算。比如输入： 2*3===54 
+-->
+
+</head> 
+<body>
+	<div class="container">
+		<form name="calculator">
+			<input type="text" id="output" name="text" disabled="disabled" value="0">
+			<div class="btns">
+				<input type="button" class="button" value="AC" id="ac" onclick="clearMsg()">
+				<input type="button" class="button" value="+/-" id="plus-minus" onclick="plusOrMinus()">
+				<input type="button" class="button" value="%" id="%" onclick="percent()">
+				<input type="button" class="button operation" value="/" id="divide" onclick="divideNumber(this)">
+
+
+
+				<input type="button" class="button" value="7" id="7" onclick="show(this)">
+				<input type="button" class="button" value="8" id="8" onclick="show(this)">
+				<input type="button" class="button" value="9" id="9" onclick="show(this)">
+				<input type="button" class="button operation" value="*" id="multi" onclick="multiNumber(this)">
+
+
+				<input type="button" class="button" value="4" id="4" onclick="show(this)">
+				<input type="button" class="button" value="5" id="5" onclick="show(this)">
+				<input type="button" class="button" value="6" id="6" onclick="show(this)">
+				<input type="button" class="button operation" value="-" id="minus" onclick="minusNumber(this)">
+
+
+				<input type="button" class="button" value="1" id="1" onclick="show(this)">
+				<input type="button" class="button" value="2" id="2" onclick="show(this)">
+				<input type="button" class="button" value="3" id="3" onclick="show(this)">
+				<input type="button" class="button operation" value="+" id="plus"  onclick="plusNumber(this)">
+
+
+				<input type="button" class="button zero" value="0" id="0" onclick="show(this)">
+				<input type="button" class="button" value="." id="point" onclick="addPoint(this)">
+				<input type="button" class="button operation" value="=" id="equal"  onclick="getResult()">
+
+			</div>
+		</form>
+	</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
