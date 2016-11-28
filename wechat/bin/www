@@ -1,0 +1,224 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+
+var config = require('../config');
+var dbHelper  = require('../db/dbhelper');
+var app = require('../app');
+var debug = require('debug')('wechat:server');
+var http = require('http');
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+    server.on('listening', onListening);
+
+//socket连接
+var clientSockets = {};
+var onlineList = [];
+var chattingList = {};
+var io = require('socket.io').listen(server);
+
+io.on('connection', function (socket) {     //socket参数为一个client与服务器的连接标示
+  //client登录
+  socket.on('login', function (_id) {
+    clientSockets[_id] = socket;     //"username":_id 键值对
+    if (onlineList.indexOf(_id) == -1) {
+      onlineList.push(_id);       //加入在线用户数组
+    }
+    console.log("添加在线用户成功!");
+    });
+
+  //服务器端接收消息后,存储消息
+  socket.on('message', function (sender,receiver,msg, fUrl,iUrl) {
+    console.log("服务器接收到一条信息");
+    var readstatus;
+    if (onlineList.indexOf(receiver) == -1) {   //接受者不在线
+      readstatus = config.msg.UNREAD;
+      clientSockets[sender].emit('msg',sender, receiver, msg , fUrl);
+    }else{                                      //接受者在线
+      readstatus = config.msg.READ;
+      console.log(readstatus);
+      console.log(sender);
+      clientSockets[sender].emit('msg',sender, receiver, msg, fUrl);
+      clientSockets[receiver].emit('msg',sender, receiver, msg, iUrl);
+      // socket.emit('msg',sender, receiver, msg);// 可以触发
+      // sender.emit('msg',sender, receiver, msg);// 不能触发
+      // io.emit('msg',sender, receiver, msg);   //可以触发
+      // io.to(sender).emit('msg',sender, receiver, msg);   //不可以触发
+      // io.to(receiver).emit('msg',sender, receiver, msg);
+    }
+    var data = {
+      sender: sender,
+      receiver: receiver,
+      msgContent: msg,
+      readStatus : readstatus,
+    };
+    dbHelper.addMsg(data, function(success, data){
+       console.log("store into the mongodb");
+      //如果属于离线消息,调用dbhelper,修改friend集合中的unread++
+      if(readstatus == config.msg.UNREAD){
+        console.log("我要来更新啦!");
+        dbHelper.updateOffMsgs(data,function (success, data) {
+          console.log("after update");
+        })
+      }
+    });
+  })
+  //图片转发
+  socket.on('img', function (sender, receiver, img, senderUrl) {
+    console.log("正在转发一张图片");
+    clientSockets[sender].emit('newImg',sender, receiver, img ,senderUrl);
+    clientSockets[receiver].emit('newImg',sender, receiver, img, senderUrl);
+  })
+  //搜索好友并添加
+  socket.on('addNewFriend',function (iid,fid) {
+    console.log("添加好友中");
+    var newFriend = {
+      me: iid,
+      friend: fid,
+    };
+    dbHelper.addFriend(newFriend, iid, function (success,data) {
+      // console.log(data);
+      socket.emit('addConfirm', data);
+      // socket.emit('addFriendToList',);  还要把好友添加到好友列表中去
+    })
+
+  })
+  //点击创建会话窗口
+  socket.on('startSession', function (iid,fid ,fname,fUrl) {
+    if(chattingList[iid].indexOf(fid) == -1){
+      socket.emit('newWindow', fid ,fname,fUrl);
+      chattingList[iid].push(fid);
+      console.log(chattingList);
+    }else{
+      socket.emit('showWindow', fid, fname);
+    }
+  })
+  //收到新消息后,创建会话窗口
+  socket.on('startHiddenSession', function (iid,fid ,fname ,msg) {
+    if(chattingList[iid].indexOf(fid) == -1){
+      socket.emit('newHiddenWindow', fid ,fname, msg);
+      chattingList[iid].push(fid);
+      console.log(chattingList);
+    }else{
+      socket.emit('showWindow', fid, fname);
+    }
+  })
+  //获取未读好友的列表
+  socket.on('getUnreadList',function (iid) {
+    dbHelper.getUnreadList(iid,function (success, data) {
+      // console.dir(data);  是未读好友的数组
+      var chatting = [];
+      for(var i = 0; i < data.length; i++ ){
+        chatting.push(data[i].friend.toString());
+        console.log(chattingList);
+        socket.emit('createUnreadSession',data[i].friend,(data[i].unread/2));
+        socket.emit('createUnreadWindow', iid ,data[i].friend);
+      }
+      chattingList[iid] = chatting;
+    })
+  })
+  //获取未读消息,清零未读消息计数器
+  socket.on('showAndClearUnread',function (iid, fid) {
+    dbHelper.getUnreadMsg(iid,fid,function (success, data) {
+      // 把每一条消息渲染到窗口内
+      console.log("正在渲染未读消息");
+      console.log(data.length);
+      for(var i = 0; i< data.length; i++){
+        console.log("这是一条未读消息");
+        socket.emit('msg',data[i].sender, data[i].receiver ,data[i].msgContent);
+      }
+    })
+  })
+
+
+})
+
+
+
+
+
+
+
+
+
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}

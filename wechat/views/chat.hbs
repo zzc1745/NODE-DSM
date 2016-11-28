@@ -1,0 +1,103 @@
+<div id="user-box">
+    <div id="left-top" >
+        <div class="user-info">
+            <img src="/public/images/icon.jpeg">
+            <span class="user-name">its okay</span>
+            <!--<a href="javascritp:void(0);">-->
+                <i class="more-info"></i>
+            <input type="file" accept="image/*" id="changeProfile">
+            <!--</a>-->
+        </div>
+        <div class="search-box">
+            <i class="search-icon"></i>
+            <input type="text" name="" class="search-text" placeholder="搜索">
+            <div class="search-result">
+
+            </div>
+        </div>
+        <div class="options">
+            <i class="chat-list-btn"></i>
+            <i class="group-list-btn"></i>
+            <i class="friend-list-btn"></i>
+        </div>
+    </div>
+    <div id="left-bottom">
+        <div class="chat-list">
+        </div>
+        <div class="group-list">
+            {{#each entries}}
+            <div class="friend-item" name="{{friend._id}}">
+                <img class="chat-item-icon" src="{{friend.imgUrl}}">
+                <div class="chat-item-detail">
+                    <span class="chat-item-username">{{friend.username}}</span>
+                    <span class="chat-item-content">group list</span>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        <div class="friend-list">
+        </div>
+    </div>
+</div>
+
+<div id="chatting-box">
+    <div id="chatting-title">
+        <span>ITS OKAY</span>
+    </div>
+    <div id="chatting-history">
+        <div id="anna" class="one-session">
+            <div class="other-msg">
+                <span class="other-chat-icon"></span>
+                <div class="other-msg-container">
+                    这是一个文本框，这是一个文本框，这是一个文本框。
+                </div>
+                <div class="clear-both"></div>
+            </div>
+            <div class="me-msg">
+                <span class="me-chat-icon"></span>
+                <div class="me-msg-container">
+                    这是一个文本框，这是一个文本框，这是一个文本框。
+                    <img src="/public/arclist/6.gif" border="0" />
+                </div>
+                <div class="clear-both"></div>
+            </div>
+        </div>
+        <div id="allHistory" class="one-session">
+            <div class="other-msg">
+                <span class="other-chat-icon"></span>
+                <div class="other-msg-container">
+                    这是一个文本框，这是一个文本框，这是一个文本框。
+                </div>
+                <div class="clear-both"></div>
+            </div>
+            <div class="me-msg">
+                <span class="me-chat-icon"></span>
+                <div class="me-msg-container">
+                    这是一个文本框，这是一个文本框，这是一个文本框。
+                    <img src="/public/arclist/6.gif" border="0" />
+                </div>
+                <div class="clear-both"></div>
+            </div>
+        </div>
+    </div>
+    <div id="editing">
+        <div class="enter-functions">
+            <i class="faces  emotion" ></i>
+            <a href="javascritp:void(0);" id="getHistory"><i class="images"></i></a>   <!--//调取聊天记录用-->
+            <i class="files"></i>
+            <input type="file" id="sendImage"  accept="image/*">
+        </div>
+        <textarea class="enter-box" id="saytext" ></textarea>
+        <button class="btn btn-primary" id="send-message-btn">发送</button>
+    </div>
+</div>
+
+
+
+<link rel="stylesheet" href="/public/stylesheets/chat.css">
+<script src="/public/javascripts/chat.js"></script>
+
+<link rel="stylesheet" href="/public/stylesheets/chat.css">
+<script src="/public/chat/search.js"></script>
+<script src="/public/chat/getHistory.js"></script>
+<script src="/public/chat/sendImg.js"></script>

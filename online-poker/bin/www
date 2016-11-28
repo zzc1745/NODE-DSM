@@ -1,0 +1,196 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var debug = require('debug')('online-poker:server');
+var http = require('http');
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+var clientSockets = {};
+var onlineCount = 0;
+var pkList = [];
+var io = require('socket.io').listen(server);
+var cards = [];   //存放整一副牌的base64
+var card1 = [];   //半副牌,存放的是牌的序号
+var card2 = [];   //半副牌,存放的是牌的序号
+var cardNumber = [1,2,3,4,5,6,7,8,9,10,
+                  11,12,13,14,15,16,17,18,19,20,
+                  21,22,23,24,25,26,27,28,29,30,
+                  31,32,33,34,35,36,37,38,39,40,
+                  41,42,43,44,45,46,47,48,49,50,
+                  51,52,53,54];
+
+
+io.on('connection',function (socket) {
+  var uname;
+
+  //接收到js初始化base64成功信号后,打乱分牌成两堆
+  socket.on('cardDone',function (_cards) {
+    if (cards.length == 0){
+      cards = _cards;
+      console.log("我收到牌了");
+      //发牌
+      cardNumber.sort(function(){ return 0.5 - Math.random() });
+      for(var i = 0; i < 27; i++){
+        card1.push(cardNumber.pop());
+      }
+      for(var i = 0; i < 27; i++){
+        card2.push(cardNumber.pop());
+      }
+      card1.sort(compare);
+      card2.sort(compare);
+      console.dir(card1);
+      console.dir(card2);
+    }
+  })
+  socket.on('login', function (_username) {
+    console.dir(pkList);
+    var username = _username;
+    pkList.push(username);
+    clientSockets[username] = socket;
+    console.log("新用户");
+    console.dir(pkList);
+    //如果在线两人,开始pk
+    if(pkList.length == 2) {
+      clientSockets[pkList[0]].emit('gameInit', card1 ,cards);
+      clientSockets[pkList[0]].emit('firstOut');
+      clientSockets[pkList[1]].emit('gameInit', card2, cards);
+    }
+  });
+  socket.on('nextTurn',function (player , outCards ,outObj) {
+    //移交出牌权, 给对手渲染我方出的牌,还要把余牌数量相应减少
+    console.log("这是XX打的牌:");
+    console.log(player);
+    if (player == pkList[0]){
+      console.log('给第二个人传牌');
+      console.dir(outCards);
+      clientSockets[pkList[1]].emit('checkRound', outCards, cards ,outObj);
+    } else {
+      console.log('给第一个人传牌');
+      console.dir(outCards);
+      clientSockets[pkList[0]].emit('checkRound', outCards, cards ,outObj);
+    }
+  })
+  socket.on('win',function (winnerName) {
+    //在线人数改为0 , 需要按下restart才能+1 
+    clientSockets[pkList[0]].emit('gameOver', winnerName);
+    clientSockets[pkList[1]].emit('gameOver', winnerName);
+  })
+  //非正常下线
+  socket.on('disconnect',function (username) {
+    onlineCount -=1;
+    //删除该用户对应的键值对,即socket包
+    delete clientSockets[username];
+    socket.leave(username);
+    // 移除pk列表对应元素
+    pkList.splice(pkList.indexOf(username),1);
+    console.log(username + 'offline....');
+  })
+  socket.on('leave',function () {
+    socket.emit('disconnect');
+  })
+})
+
+// return -1 表示不变
+// return 1 表示 换顺序
+// 目标顺序: 大王小王在最左, A~K依次排列
+function compare(value1, value2) {
+  if((value2%13) == 0){
+    return -1;
+  } else if ((value1%13) == 0){
+    return 1;
+  } else if(value1 == 53 || value1 == 54){
+    return -1;
+  } else if(value2 == 53 || value2 == 54){
+    return 1;
+  } else if ((value1)%13 < (value2)%13 ) {
+    return -1;
+  } else if ((value1)%13 > (value2)%13) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}

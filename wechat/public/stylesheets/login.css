@@ -1,0 +1,65 @@
+body {
+    background-image: url("../images/bgImage.jpg");
+    /*display: flex;*/
+}
+
+#card {
+    display: block;
+    position: absolute;
+    right: 10%;
+    top: 80px;
+    width: 29%;
+    min-width: 290px;
+    height: 450px;
+    transition: width 1.8s cubic-bezier(0.23, 1, 0.32, 1), height 1.8s cubic-bezier(0.23, 1, 0.32, 1), transform 1.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+    transform-origin: 50% 50%;
+}
+.entry-page {
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    position: absolute;
+    display: block;
+    padding: 23px 45px;
+}
+.front-box {
+    backface-visibility: hidden;
+    transition: background 0.15s ease, line-height 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+#card .back-box {
+    /*在反过来之前,它是倒着的*/
+    transform: translateZ(-1px) rotateY(180deg);
+}
+.is-open {
+    transform: rotateY(180deg);
+}
+.input-control {
+    width: 100%;
+    height: 35px;
+    border-radius: 3px;
+    border: 1px solid #cccccc;
+    padding: 6px 12px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+}
+.entry-title {
+    padding-bottom: 28px;
+    color: #777;
+}
+.btn-color {
+    float: right;
+    background-color: #009a61;
+    border-color: #008151;
+    color: #fff;
+}
+.actions {
+    margin-top: 20px;
+    height: 30px;;
+}
+#turn-front, #turn-back {
+    float: left;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #009a61;
+}

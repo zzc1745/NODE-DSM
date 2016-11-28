@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>we chat</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <link rel="stylesheet" href="../public/stylesheets/login.css">
+    <link rel="stylesheet" href="../public/lib/jquery/jquery-ui.css">
+    <link rel="stylesheet" href="../public/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/lib/fonts/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../public/lib/fonts/css/ionicons.min.css">
+    <link rel="stylesheet" href="../public/lib/highlight.js/styles/default.css">
+    <link rel="stylesheet" href="../public/lib/adminlte/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="../public/lib/adminlte/css/all-skins.min.css">
+    <link rel="stylesheet" href="../public/lib/iCheck/square/blue.css">
+    <link rel="stylesheet" href="../public/lib/toastr/toastr.css">
+    <link rel="stylesheet" href="../public/lib/pace/pace.css">
+    <link rel="stylesheet" href="../public/lib/loaders/loaders.min.css">
+    <link rel="stylesheet" href="../public/lib/highlight.js/styles/solarized-light.css">
+    <link rel="stylesheet" href="../public/stylesheets/animate.css">
+
+
+    <script src="../public/lib/jquery/jquery.min.js"></script>
+    <script src="../public/lib/jquery/jquery-ui.js"></script>
+    <script src="../public/lib/jquery/jquery.validate.js"></script>
+    <script src="../public/lib/jquery/jquery.validate.messages_cn.js"></script>
+    <script src="../public/lib/cookies/jquery.cookie.js"></script>
+    <script src="../public/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../public/lib/slimScroll/jquery.slimscroll.min.js"></script>
+    <script src="../public/lib/fastclick/fastclick.js"></script>
+    <script src="../public/lib/highlight.js/highlight.min.js"></script>
+    <script src="../public/lib/toastr/toastr.js"></script>
+    <script src="../public/lib/pace/pace.js"></script>
+    <script src="../public/lib/remarkable/remarkable.js"></script>
+    <script src="../public/lib/adminlte/js/app.min.js"></script>
+    <script src="../public/javascripts/loginAndReg.js"></script>
+
+</head>
+<body>
+<div id="card">
+    <div id="front" class="entry-page front-box">
+        <h3 class="entry-title">用户登录</h3>
+        <form id="login"  action="/loginCheck" method="post">
+           <div class="form-group">
+                <label for="username" class="control-label">邮箱</label>
+                <input type="text" class="input-control" id="userName" name="username" placeholder="用户邮箱">
+            </div>
+            <div class="form-group">
+                <label for="userpwd" class="control-label">密码</label>
+                <input type="password" class="input-control" id="userPwd" name="userpwd" placeholder="密码">
+            </div>
+            <div class="actions">
+                <a id="turn-back">注册新账户</a></a>
+                <a type="submit" class="btn btn-color" id="loginBtn">登录</a>
+                <div class="clearfix"></div>
+            </div>
+        </form>
+    </div>
+
+    <div id="back" class="entry-page back-box">
+        <h3 class="entry-title">创建新账号</h3>
+        <form id="register"  action="/register" method="post">
+            <div class="form-group">
+                <label for="regUsername" class="control-label">用户名</label>
+                <input type="text" class="input-control" id="regUserName" name="regUsername" placeholder="字母、数字等, 用户名唯一">
+            </div>
+            <!--<div class="form-group">-->
+                <!--<label for="regUseremail" class="control-label">注册邮箱</label>-->
+                <!--<input type="text" class="input-control" id="regUserEmail" name="regUseremail" placeholder="12345678@qq.com">-->
+            <!--</div>-->
+            <div class="form-group">
+                <label for="regUserpwd" class="control-label">密码</label>
+                <input type="password" class="input-control" id="regUserPwd" name="regUserpwd" placeholder="不少于6位">
+            </div>
+            <div class="form-group">
+                <label for="regUserpwdCheck" class="control-label">确认密码</label>
+                <input type="password" class="input-control" id="regUserpwdCheck" name="regUserpwdCheck" placeholder="不少于6位">
+            </div>
+            <label for="sexualDropdown" class="control-label">性别</label>
+            <select name="sex" id="sexualDropdown" >
+                <option value="false">男</option>
+                <option value="true">女</option>
+            </select>
+            <div class="actions">
+                <a id="turn-front">已有账户前往登录</a>
+                <a type="submit" class="btn btn-color" id="registerBtn">注册</a>
+                <div class="clearfix"></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+
+
+</html>
