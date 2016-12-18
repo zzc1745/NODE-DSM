@@ -1,0 +1,40 @@
+.admin-content {
+    display: flex;
+    height: 400px;
+    padding-top: 100px;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+.admin-navi {
+    width: 200px;
+}
+.admin-navi ul {
+    width: 100%;
+    height:40px;
+    line-height: 40px;
+    background-color: lavenderblush;
+}
+.modifyTime , .modifyQuestion {
+    width: 450px;
+    margin-left: -250px;
+    padding: 10px;;
+    border-radius: 10px;
+    background-color: seashell;
+}
+#startTime {
+    width: 200px;
+}
+.modifyQuestion input{
+    width: 40px;
+}
+#saveQ, #saveT{
+    display: block;
+    margin-top: 10px;
+}
+.input-control {
+    height: 30px;
+    border-radius: 5px;
+    border: 1px solid #cccccc;
+    padding: 6px 12px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+}

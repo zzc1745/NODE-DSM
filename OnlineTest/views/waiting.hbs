@@ -1,0 +1,23 @@
+<div class="exam-detail">
+    <div>考试科目:science</div>
+    <div id="st">开始时间:{{startTime}}</div>
+    <div id="test">考试时长:{{lastTime}}分钟</div>
+    <div id="quitUndo"><a href="/getOffline">退出</a></div>
+</div>
+<div class="student-detail">
+    <div>考生班级:{{studentClass}}</div>
+    <div>考生姓名:{{studentName}}</div>
+    <div>答题进度:{{answerStatus}}</div>
+    <div>剩余时间:{{spareTime}}</div>
+</div>
+<div class="waiting-info">
+    <div class="clock"></div>
+    <button class="start-btn hidden" id="startBtn"><a class="start-link" href="/student">Start Exam</a></button>
+</div>
+
+<div class="hidden" id="startT"></div>
+
+<link rel="stylesheet" href="/public/stylesheets/waiting.css">
+<link rel="stylesheet" href="/public/lib/flipClock/flipclock.css">
+<script type="text/javascript" src="/public/lib/flipClock/flipclock.js"></script>
+<script type="text/javascript" src="/public/test/waiting.js"></script>

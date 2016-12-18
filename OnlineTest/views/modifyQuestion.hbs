@@ -1,0 +1,41 @@
+<div class="modifyQuestion">
+    <div class="quesiton-numbers">
+        <div class="question-item">
+            <a href="?page=1">1</a>
+        </div>
+        <div class="question-item">
+            <a href="?page=2">2</a>
+        </div>
+        <div class="question-item">
+            <a href="?page=3">3</a>
+        </div>
+        <div class="question-item">
+            <a href="?page=4">4</a>
+        </div>
+        <div class="question-item">
+            <a href="?page=5">5</a>
+        </div>
+    </div>
+
+    <div class="question-detail">
+        <h3>第<span id="currentNo">{{pageNumber}}</span>题</h3>
+        <p>题干:</p>
+        <textarea type="text" class="answer-field" id="Qstatement" cols="40" rows="4" >{{oldQuestion.statement}}</textarea>
+        <p>答案:</p>
+        <textarea type="text" class="answer-field" id="standard-answer" cols="40" rows="2">{{oldQuestion.answer}}</textarea>
+        <p>分值:</p>
+        <input type="text" id="Qvalue" value="{{oldQuestion.value}}">分
+
+        <div class="helper-btns">
+            <button class="pre-q btn" id="preQ"><a href="{{#lt 1 pageNumber}}?page={{reduce pageNumber 1}}{{/lt}}">上一题</a></button>
+            <button class="pass-q btn" id="nextQ"><a href="{{#lt pageNumber 5}}?page={{add pageNumber 1}}{{/lt}}">下一题</a></button>
+            <div class="clear-both"></div>
+            <button id="saveQ" class="btn btn-primary">保存</button>
+        </div>
+
+    </div>
+</div>
+
+
+<link rel="stylesheet" href="/public/stylesheets/mQuestion.css">
+<script type="text/javascript" src="/public/test/addQ.js"></script>

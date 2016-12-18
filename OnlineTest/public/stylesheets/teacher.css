@@ -1,0 +1,27 @@
+.student-list {
+    height: 400px;
+    background-color: seagreen;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+}
+.student-item {
+    height: 70px;
+    width: 100px;
+    margin: 12px 0 0 12px;
+
+    border:1px solid aliceblue;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+.online {
+    background-color: sandybrown;
+}
+.finished {
+    background-color: lightskyblue;
+}
+.offline {
+    background-color: lavenderblush;
+}

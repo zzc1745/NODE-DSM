@@ -1,0 +1,28 @@
+<div class="studentsList">
+    <div class="box-body">
+    <table class="table table-hover">
+        <tbody>
+        <tr>
+            <th>学号</th>
+            <th>姓名</th>
+            <th>答题状态</th>
+            <th>功能</th>
+        </tr>
+        {{#each student}}
+            <tr>
+                <td><a href="/{{userNo}}">{{userNo}}</a></td>
+                <td>{{userName}}</td>
+                <td>{{status}}</td>
+                <td><a href="/excel/{{userNo}}" class="btn btn-block btn-primary btn-xs toExcel">导出Excel</a></td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+
+    </div>
+</div>
+
+
+
+<link rel="stylesheet" href="/public/stylesheets/stuList.css">
+<script type="text/javascript" src="/public/test/getExcel.js"></script>

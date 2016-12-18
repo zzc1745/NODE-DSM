@@ -1,0 +1,131 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var debug = require('debug')('onlinetest:server');
+var dbHelper = require('../db/dbHelper');
+var http = require('http');
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+var teacher = [];
+var clientSockets = {};
+var io = require('socket.io').listen(server);
+
+io.on('connection', function (socket) {
+  //记录socket客户端
+  socket.on('login',function (userNo) {
+    console.log("新用户登录");
+    clientSockets[userNo] = socket;
+  });
+
+  //学生登录,转发信息给老师
+  socket.on('studentLogin',function (studentNo) {
+    for (var i = 0; i< teacher.length; i++){
+      clientSockets[(teacher[i])].emit("studentGetOnline", studentNo);
+    }
+  })
+
+  //教师登录,添加到教师列表
+  socket.on('teacherLogin', function (teacherNo) {
+    teacher.push(teacherNo);
+    console.dir(teacher);
+  })
+
+  //学生提交试卷,转发给老师
+  socket.on('studentSubmit', function (studentNo) {
+    for (var i = 0; i< teacher.length; i++){
+      clientSockets[(teacher[i])].emit("studentFinished", studentNo);
+    }
+  })
+  //学生下线,未完成考试,转发给老师
+  socket.on('studentOffline', function (studentNo) {
+    for (var i = 0; i< teacher.length; i++){
+      clientSockets[(teacher[i])].emit("studentGetOffline", studentNo);
+    }
+  })
+
+})
+
+
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}

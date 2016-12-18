@@ -1,0 +1,44 @@
+<div class="student-detail">
+    <!--<div>考生姓名:{{studentName}}</div>-->
+    <div>考生学号:<span id="studentNumber">{{studentNo}}</span></div>
+    <div><a class="backToIndex" href="/teacher">返回首页</a></div>
+</div>
+<div class="exam-content">
+    <div class="quesiton-numbers">
+        <div class="question-item">
+            <a href="/paper/{{studentNo}}?page=1">1</a>
+        </div>
+        <div class="question-item">
+            <a href="/paper/{{studentNo}}?page=2">2</a>
+        </div>
+        <div class="question-item">
+            <a href="/paper/{{studentNo}}?page=3">3</a>
+        </div>
+        <div class="question-item">
+            <a href="/paper/{{studentNo}}?page=4">4</a>
+        </div>
+        <div class="question-item">
+            <a href="/paper/{{studentNo}}?page=5">5</a>
+        </div>
+    </div>
+
+    <div class="question-detail">
+        <div class="question-no">第<span id="question-number" name="heihei???">{{question.questionNo}}</span>题</div>
+        <div class="question-statement">
+            <p>{{question.statement}}</p>
+        </div>
+        <textarea type="text" class="answer-field" id="answer-text">{{oldAnswer}}</textarea>
+        <h4>该题得分:</h4>
+        <input type="text" id="AScore" value="{{oldScore}}">分
+        <div class="helper-btns">
+            <button class="pre-q btn" id="preQ"><a href="{{#lt 1 pageNumber}}/paper/{{studentNo}}?page={{reduce pageNumber 1}}{{/lt}}">上一题</a></button>
+            <button class="pass-q btn" id="nextQ"><a href="{{#lt pageNumber 5}}/paper/{{studentNo}}?page={{add pageNumber 1}}{{/lt}}">下一题</a></button>
+            <button class="submit-answer btn" id="saveScoreBtn">评分</button>
+            <div class="clear-both"></div>
+        </div>
+    </div>
+</div>
+
+
+<link rel="stylesheet" href="/public/stylesheets/student.css">
+<script type="text/javascript" src="/public/test/grade.js"></script>

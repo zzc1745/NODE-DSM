@@ -1,0 +1,23 @@
+
+<div class="exam-detail">
+    <div>考试科目:{{exmeName}}</div>
+    <div>开始时间:{{startTime}}</div>
+    <div>考试时长:{{lastTime}}</div>
+    <a href="/admin">后台管理</a>
+</div>
+<div class="student-list">
+
+    {{#each student}}
+        <a href="/paper/{{userNo}}">
+            <div class="student-item {{status}}" name="{{userNo}}">
+                <span>{{userName}}</span>
+                <span>{{userNo}}</span>
+            </div>
+        </a>
+    {{/each}}
+
+</div>
+
+
+<link rel="stylesheet" href="/public/stylesheets/teacher.css">
+<script type="text/javascript" src="/public/test/teacherNote.js"></script>

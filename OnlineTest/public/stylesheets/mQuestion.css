@@ -1,0 +1,59 @@
+.quesiton-numbers {
+    margin-top: -70px;
+    margin-bottom: 20px;
+    width: 240px;
+    background-color: peachpuff;
+    padding: 7px 7px 0 7px;
+    border-radius: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.question-item {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    margin-bottom: 7px;
+    line-height:35px;
+    text-align: center;
+    background-color: seashell;
+}
+
+.answer-field {
+    /*height: 100px;*/
+    margin-top: -5px;
+    border-style: solid;
+    border-radius: 5px;
+    border: 1px solid lightgrey;
+    background-color: snow;
+}
+
+.pre-q, .pass-q {
+    float: left;
+    margin: 10px 10px 10px 0;
+    background-color: mediumseagreen;
+    border: green;
+    color: white;
+}
+.pre-q:hover, .pass-q:hover,.submit-answer:hover {
+    background-color: seagreen;
+    color: white;
+}
+.submit-answer {
+    float: right;
+    margin: 10px;
+    background-color: mediumseagreen;
+    border: green;
+    color: white;
+}
+.helper-btns {
+    border-radius: 0 0 15px 15px;
+}
+#Qvalue {
+    margin-top: -5px;
+    border-style: solid;
+    border-radius: 5px;
+    border: 1px solid lightgrey;
+    background-color: snow;
+}

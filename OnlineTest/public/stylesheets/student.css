@@ -1,0 +1,103 @@
+/*重写底色*/
+.page-wrapper {
+    background-color: seashell;
+}
+
+/*信息栏*/
+.student-detail {
+    font-size: 18px;
+    font-weight:bold;
+    background-color: seagreen;
+}
+.student-detail div {
+    padding: 5px 10px;
+    display: inline-block;
+    width: 24%;
+}
+
+/*题目序号表*/
+.exam-content {
+      height: 400px;
+      padding-top: 50px;
+      background-color: seashell;
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-start;
+  }
+.quesiton-numbers {
+    width: 240px;
+    background-color: peachpuff;
+    padding: 7px 7px 0 7px;
+    border-radius: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.question-item {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    margin-bottom: 7px;
+    line-height:35px;
+    text-align: center;
+    background-color: seashell;
+}
+
+/*题目详情*/
+.question-detail {
+    width: 600px;
+    margin-left: -100px;
+    /*background-color: palevioletred;*/
+}
+.question-no {
+    padding: 5px 10px;
+    border-radius: 15px 15px 0 0;
+    background-color: peachpuff;
+    font-weight: bold;
+    font-size: 15px;
+}
+.question-statement {
+    padding: 5px 10px 25px 10px;
+    background-color: snow;
+    font-weight: bold;
+    font-size: 15px;
+}
+.answer-field {
+    width: 600px;
+    height: 100px;
+    margin-top: -5px;
+    border-style: solid;
+    border-radius: 5px;
+    border: 1px solid lightgrey;
+    background-color: snow;
+}
+.pre-q, .pass-q {
+    float: left;
+    margin: 10px;
+    background-color: mediumseagreen;
+    border: green;
+    color: white;
+}
+.pre-q:hover, .pass-q:hover,.submit-answer:hover {
+    background-color: seagreen;
+    color: white;
+}
+.submit-answer {
+    float: right;
+    margin: 10px;
+    background-color: mediumseagreen;
+    border: green;
+    color: white;
+}
+.helper-btns {
+    margin-top: -5px;
+    background-color: white;
+    border-radius: 0 0 15px 15px;
+}
+#quitBtn {
+    float: right;
+}
+.backToIndex {
+    color: black;
+}

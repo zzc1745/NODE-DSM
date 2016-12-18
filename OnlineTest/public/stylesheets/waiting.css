@@ -1,0 +1,38 @@
+/*信息栏颜色重写*/
+.exam-detail,.student-detail {
+    background-color: peachpuff;
+}
+.waiting-info {
+    height: 400px;
+    font-size: 40px;
+    font-weight: bold;
+    color: seashell;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: center;
+    /*background-color: #2672ec;*/
+}
+.start-btn {
+    margin: 10px;
+    background-color: mediumseagreen;
+    border: green;
+    color: white;
+}
+.start-btn:hover {
+    background-color: white;
+    color: white;
+}
+.start-link {
+    text-underline: none;
+    color: #000;
+}
+.start-link:hover {
+    color: #2672ec;
+    text-underline: none;
+}
+.clock {
+    display: flex;
+    justify-content: center;
+}

@@ -1,0 +1,51 @@
+<div class="exam-detail">
+    <div>考试科目:{{examName}}</div>
+    <div>开始时间:<span id="periodT">{{startTime}}</span></div>
+    <div>考试时长:<span id="last">{{lastTime}}</span>分</div>
+    <div id="quitUndo"><a href="/getOffline">退出</a></div>
+</div>
+<div class="student-detail">
+    <div>考生姓名:{{studentName}}</div>
+    <div>考生学号:{{studentNo}}</div>
+    <div>答题进度:{{answerStatus}}</div>
+    <!--<div>剩余时间:<span id="left">{{spareTime}}</span>分</div>-->
+</div>
+<div class="exam-content">
+    <div class="quesiton-numbers">
+        <div class="question-item">
+            <a href="?page=1">1</a>
+        </div>
+        <div class="question-item">
+            <a href="?page=2">2</a>
+        </div>
+        <div class="question-item">
+            <a href="?page=3">3</a>
+        </div>
+        <div class="question-item">
+            <a href="?page=4">4</a>
+        </div>
+        <div class="question-item">
+            <a href="?page=5">5</a>
+        </div>
+    </div>
+
+    <div class="question-detail">
+        <div class="question-no">第<span id="question-number" name="heihei???">{{question.questionNo}}</span>题</div>
+        <div class="question-statement">
+            <p>{{question.statement}}</p>
+        </div>
+        <textarea type="text" class="answer-field" id="answer-text" placeholder="请在此处填写你的回答...">{{oldAnswer}}</textarea>
+        <div class="helper-btns">
+            <button class="pre-q btn" id="preQ"><a href="{{#lt 1 pageNumber}}?page={{reduce pageNumber 1}}{{/lt}}">上一题</a></button>
+            <button class="pass-q btn" id="nextQ"><a href="{{#lt pageNumber 5}}?page={{add pageNumber 1}}{{/lt}}">下一题</a></button>
+            <button class="submit-answer btn" id="saveAnswerBtn">提交答卷并退出</button>
+            <div class="clear-both"></div>
+        </div>
+    </div>
+
+</div>
+
+
+<link rel="stylesheet" href="/public/stylesheets/student.css">
+<script type="text/javascript" src="../public/test/studentInit.js"></script>
+<script type="text/javascript" src="../public/test/addAnswer.js"></script>
